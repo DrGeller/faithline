@@ -1,0 +1,77 @@
+@charset "utf-8";
+/* CSS Document */
+.calendarBox {
+	position:absolute;
+	top:50px;
+	left:0px;
+	width:100%;
+	background-color:#FFF;
+	border-top:solid 2px #999;
+}
+.weekContainer {
+	width:100%;
+	height:30px;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.weekNum {
+	position:relative;
+	height: 30px;
+	background-color: #dbdbdb;
+	float: left;
+	color:#666;
+	font-size:12px;
+}
+.weekNum span {
+	position:absolute;
+	left:10px;
+	width:auto;
+	top:5px;
+	cursor:default;
+}
+.dateContainer {
+	position:absolute;
+	width:100%;
+}
+#dateContainer01 {
+	top:30px;
+}
+.dateBox {
+	position:relative;
+	float: left;
+	color:#666;
+	font-size:14px;
+	cursor:pointer;
+}
+.dateBox span {
+	position:absolute;
+	left:10px;
+	width:auto;
+	top:4px;
+	cursor:pointer;
+}
+.eventInfo {
+	position:absolute;
+	height:30px;
+	top:30px;
+	left:10px;
+	text-align:left;
+	max-width:100%;
+}
+.tipInfo_citizen {
+	position:absolute;
+	height:30px;
+	left:10px;
+	top:60px;
+	text-align:left;
+	max-width:100%;
+}
+.tipInfo_notCitizen {
+	position:absolute;
+	height:30px;
+	left:10px;
+	top:90px;
+	text-align:left;
+	max-width:100%;
+}

@@ -1,0 +1,105 @@
+@charset "utf-8";
+/* elementBox CSS */
+
+.elementBox {
+	width:600px;
+	height:400px;
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	background-color:#FFF;
+	top:80px;
+	display:none;
+	border:solid 2px #999999;
+	z-index:1;
+}
+.elementBoxContainer {
+	position:absolute;
+	left:25px;
+	top:75px;
+	width:550px;
+	height:300px;
+	
+}
+.elementBoxMenu {
+	position:absolute;
+	left:245px;
+	top:23px;
+	width:120px;
+	height:30px;
+	overflow:hidden;
+}
+.elementBoxMenuItemContainer {
+	width:120px;
+	height:auto;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.elementBoxMenuItem {
+	font-family:"微软雅黑";
+	font-weight:380;
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:120px;
+	height:30px;
+	cursor:pointer;
+}
+.elementBoxMenuItem span {
+	font-size:16px;
+	position:absolute;
+	width:120px;
+	top:4px;
+	text-align:center;
+	cursor:pointer;
+}
+.elementBoxMenuItem:hover {
+	background-color:#920000;
+	color:#FFF;
+}
+.elementBoxContent {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:550px;
+	height:300px;
+	overflow:hidden;
+}
+.elementBoxContentContainer {
+	width:99px;
+	height:69px;
+	position:absolute;
+	border:solid 1px #999999;
+	cursor:pointer;
+}
+#elementBoxContentContainer01 {
+	left:10px;
+	top:10px;
+}
+.elementBoxContentItem {
+	position:absolute;
+	width:90px;
+	height:60px;
+	left:5px;
+	top:5px;
+	background-color:#FFF;
+}
+.elementBoxContentContainer:hover {
+	background-color:#bf0f0f;
+}
+.elementBoxContentItem span {
+	font-family:"微软雅黑";
+	font-size:14px;
+	position:absolute;
+	color:#333;
+	left:0px;
+	top:18px;
+	width:90px;
+	height:30px;
+	text-align:center;
+	cursor:pointer;
+} 
+#threePhase_AC_supply span {
+	top:15px;
+}

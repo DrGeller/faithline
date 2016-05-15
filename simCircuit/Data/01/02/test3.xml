@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<projectSimcircuit>
+  <threePhase_AC_supply>
+    <APhase>
+      <APhaseAmplitude>220</APhaseAmplitude>
+      <APhaseAngle>0</APhaseAngle>
+    </APhase>
+    <BPhase>
+      <BPhaseAmplitude>220</BPhaseAmplitude>
+      <BPhaseAngle>220</BPhaseAngle>
+    </BPhase>
+    <CPhase>
+      <CPhaseAmplitude>220</CPhaseAmplitude>
+      <CPhaseAngle>120</CPhaseAngle>
+    </CPhase>
+    <sourceType>voltageSource</sourceType>
+    <elementTag>1</elementTag>
+    <elementPosition>
+      <elementPositionLeft>235px</elementPositionLeft>
+      <elementPositionTop>243px</elementPositionTop>
+    </elementPosition>
+  </threePhase_AC_supply>
+<electricityTransmationModule><ID1><IDNum>1</IDNum><risistance>10</risistance><reactance>10</reactance><elementPosition><elementPositionLeft>381px</elementPositionLeft><elementPositionTop>146px</elementPositionTop></elementPosition></ID1><elementTag>1</elementTag><ID2><IDNum>2</IDNum><risistance>10</risistance><reactance>10</reactance><elementPosition><elementPositionLeft>379px</elementPositionLeft><elementPositionTop>251px</elementPositionTop></elementPosition></ID2><ID3><IDNum>3</IDNum><risistance>10</risistance><reactance>10</reactance><elementPosition><elementPositionLeft>377px</elementPositionLeft><elementPositionTop>379px</elementPositionTop></elementPosition></ID3><ID4><IDNum>4</IDNum><risistance>10</risistance><reactance>10</reactance><elementPosition><elementPositionLeft>661px</elementPositionLeft><elementPositionTop>128px</elementPositionTop></elementPosition></ID4><ID5><IDNum>5</IDNum><risistance>10</risistance><reactance>10</reactance><elementPosition><elementPositionLeft>695px</elementPositionLeft><elementPositionTop>244px</elementPositionTop></elementPosition></ID5><ID6><IDNum>6</IDNum><risistance>10</risistance><reactance>10</reactance><elementPosition><elementPositionLeft>701px</elementPositionLeft><elementPositionTop>389px</elementPositionTop></elementPosition></ID6></electricityTransmationModule><shortCircuitFaultModule><triggerDelay>0.5</triggerDelay><faultType>三相短路</faultType><elementTag>1</elementTag><elementPosition><elementPositionLeft>532px</elementPositionLeft><elementPositionTop>247px</elementPositionTop></elementPosition></shortCircuitFaultModule><measuringScope><elementTag>1</elementTag><elementPosition><elementPositionLeft>857px</elementPositionLeft><elementPositionTop>244px</elementPositionTop></elementPosition></measuringScope></projectSimcircuit>
