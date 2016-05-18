@@ -7,266 +7,81 @@
   <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1">
   <![endif]-->
-  <link rel="shortcut icon" href="Design/testIcon.ico" type="image/x-icon"/>
-  <link rel="stylesheet" href="CSS/animate css/animate.min.css">
+  <link rel="shortcut icon" href="Design/testIcon.ico" type="image/x-icon">
+  <link href="https://cdn.bootcss.com/material-design-icons/2.2.3/iconfont/material-icons.css" rel="stylesheet">
+  <link href="https://cdn.bootcss.com/material-design-lite/1.1.3/material.css" rel="stylesheet">
+  <script src="https://cdn.bootcss.com/material-design-lite/1.1.3/material.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
   <style type="text/css">
-    * {
-      margin:0px;
-      padding:0px;
-      font-family:"Microsoft YaHei";
-    }
-    html, body {
-      width: 100%;
-      height: 100%;
-      background-color: #2980b9;
-    }
-    .mainContainer {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-    .logoContainer {
-      position: absolute;
-      width: 500px;
-      height: 200px;
-      left: 50%;
-      top: 40%;
-      margin-left: -250px;
-      margin-top: -100px;
-    }
-    .logo {
-      position: absolute;
-      width: 500px;
-      height: 200px; 
-      font-family:"Microsoft Tai Le";
-      font-size: 135px;
-      color: #FFF;
-      line-height: 200px;
-      vertical-align: middle;
-      text-align: center;
-    }
-    .userInfo {
-      position: absolute;
-      width: 300px;
-      height: 400px;
-      left: 50%;
-      top: 40%;
-      margin-left: -150px;
-      margin-top: -200px;
-      display: none;
-    }
-    .userPic {
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      left: 75px;
-      top: 20px;
-      border-radius:75px;
-      border:2px solid #FFF;
-    }
-    .userPic img {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-    }
-    .userData {
-      position: absolute;
-      width: 300px;
-      height: 200px;
-      top: 170px;
-    }
-    .userName {
-      position: absolute;
-      width: 300px;
-      height: 30px;
-      top: 20px;
-      text-align: center;
-      line-height: 30px;
-      vertical-align: middle;
-      font-size: 18px;
-      color: #FFF;
-    }
-    .userCompany {
-      position: absolute;
-      width: 300px;
-      height: 30px;
-      top: 50px;
-      text-align: center;
-      line-height: 30px;
-      vertical-align: middle;
-      font-size: 18px;
-      color: #FFF;
-    }
-    .deskTop {
-      position: absolute;
-      width: 800px;
-      height: auto;
-      left: 50%;
-      top: 5%;
-      margin-left: -400px;
-    }
-    .userCard {
-      position: absolute;
-      width: 290px;
-      height: 140px;
-      left: 0px;
-      display: none;
-      background-color: #FFF;
-    }
-    .userCard .userPic {
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      left: 25px;
-      top: 20px;
-    }
-    .userCard .userData {
-      position: absolute;
-      width: 120px;
-      height: 100px;
-      right: 25px;
-      top: 20px;
-    }
-    .userCard .userData .userName {
-      position: absolute;
-      width: 120px;
-      height: 30px;
-      text-align: left;
-      top: 20px;
-      line-height: 30px;
-      vertical-align: middle;
-      color: #000;
-    }
-    .userCard .userData .userDuty {
-      position: absolute;
-      width: 120px;
-      height: 30px;
-      text-align: left;
-      top: 50px;
-      line-height: 30px;
-      vertical-align: middle;
-      font-size: 12px;
-    }
-    .messageCard {
-      position: absolute;
-      width: 500px;
-      height: 140px;
-      right: 0px;
-      display: none;
-      background-color: #FFF;
-    }
-    .missionCard {
-      position: absolute;
-      width: 800px;
-      height: 490px;
-      top: 150px;
-      display: none;
-      background-color: #FFF;
-    }
-    .mapCard {
-      position: absolute;
-      width: 490px;
-      height: 260px;
-      left: 0px;
-      top: 650px;
-      display: none;
-      background-color: #FFF;
-      margin-bottom: 5%;
-    }
-    .weatherCard {
-      position: absolute;
-      width: 300px;
-      height: 260px;
-      right: 0px;
-      top: 650px;
-      display: none;
-      background-color: #FFF;
-      margin-bottom: 5%;
-    }
+  * {
+    margin: 0px;
+    padding: 0px;
+    font-family: "Microsoft Yi Baiti, Microsoft Yahei";
+  }
+  html body {
+    height: 100%;
+  }
+  body .mainContainer {
+    font-family: 'Roboto', 'Helvetica', sans-serif;
+  }
+  .mainContainer .functionArea {
+    max-width: 900px;
+    width: 100%;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+  }
+  .mainContainer.mdl-layout .mdl-layout__content {
+    padding-top: 230px;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mainContainer .mdl-card {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    min-height: 360px;
+  }
+  .box1 {
+  
+  }
+  .box2 {
+  }
   </style>
-  <script src="../../Public Library/bower_components/jquery/dist/jquery.min.js"></script>
-  <script>
-    $(document).ready(function(e) {
-      $mainContainer = $(".mainContainer");
-      $logo = $(".logo");
-      $userInfo = $(".userInfo");
-      $userName = $(".userInfo .userName");
-      $userCompany = $(".userInfo .userCompany");
-      $desktop = $(".deskTop");
-      $logo.addClass("flipInX").css({"animation-delay":"0.5s"});
-      $userCard = $(".userCard");
-      $mapCard = $(".mapCard");
-      $messageCard = $(".messageCard");
-      $missionCard = $(".missionCard");
-      $weatherCard = $(".weatherCard");
-
-      logoFlipFun = function() {
-        $logo.removeClass("flipInX").addClass("fadeOut");
-      };
-      userInfoDisplayFun = function() {
-        $userInfo.addClass("fadeInUpBig").css({"display":"block"});
-      };
-      userInfoExitsFun = function() {
-        $userInfo.removeClass("fadeInUpBig").addClass("fadeOut");
-      };
-      deskTopDisPlayFun = function() {
-        $mainContainer.css({"overflow":"auto"});
-        $userCard.addClass("zoomIn").css({"display":"block"}).css({"animation-duration":"0.5s"});
-        $messageCard.addClass("zoomIn").css({"display":"block"}).css({"animation-delay":"0.2s","animation-duration":"0.5s"});
-        $missionCard.addClass("zoomIn").css({"display":"block"}).css({"animation-delay":"0.4s","animation-duration":"0.5s"});
-        $mapCard.addClass("zoomIn").css({"display":"block"}).css({"animation-delay":"0.6s","animation-duration":"0.5s"});
-        $weatherCard.addClass("zoomIn").css({"display":"block"}).css({"animation-delay":"0.8s","animation-duration":"0.5s"});
-      };
-
-      $.ajax({
-        url:"manage.php",
-        type:"POST",
-        data:{progressStatus:"loginProgress"},
-        success:function(data,status) {
-          console.log(data);
-          userData = $.parseJSON(data);
-          if(data!="error") {
-            $logo.addClass("flipInX")  
-            setTimeout("logoFlipFun()",1600);
-            if(userData["userName"]!="") {
-              $userName.html(userData["userName"]);
-              $userCompany.html(userData["userCompany"]);
-              setTimeout("userInfoDisplayFun()",2300);
-              setTimeout("userInfoExitsFun()",4300);
-              setTimeout("deskTopDisPlayFun()",6300);
-            }
-          } 
-        }
-      });
+  <script type="text/javascript">
+    $(document).ready(function() {
+      
     });
   </script>
 </head>
 <body>
-  <div class="mainContainer">
-    <div class="logoContainer">
-      <div class="logo animated">Force</div>
-    </div>
-    <div class="userInfo animated">
-      <div class="userPic"><img src="Img/userPic.png" width="150px" height="150px"></div>
-      <div class="userData">
-        <div class="userCompany"></div>
-        <div class="userName"></div>
-      </div>
-    </div>
-    </div>
-    <div class="deskTop">
-      <div class="userCard animated">
-        <div class="userPic"><img src="Img/userPic.jpg" width="100px" height="100px"></div>
-        <div class="userData">
-          <div class="userName">何&nbsp;卓</div>
-          <div class="userDuty">运行专责</div>
+  <div class="mainContainer mdl-layout mdl-js-layout">
+    <div class=" mdl-layout__content">
+      <div class="functionArea mdl-grid">
+        <div class="box1 mdl-card mdl-cell mdl-cell--8-col mdl-shadow--2dp">
+          <div class="mdl-card__media mdl-color-text--grey-50">
+            <h3>Text1</h3>
+          </div>
+        </div>
+        <div class="box2 mdl-card mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop mdl-shadow--2dp">
+          <div class="mdl-card__media mdl-color-text--grey-50">
+            <h3>Text2</h3>
+          </div>
         </div>
       </div>
-      <div class="messageCard animated"></div>
-      <div class="missionCard animated"></div>
-      <div class="mapCard animated"></div>
-      <div class="weatherCard animated"></div>
+    </div>
   </div>
 </body>
 </html>
