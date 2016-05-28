@@ -168,11 +168,13 @@
       };
       $newButton.bind('click', newCardFun);
       $newButton_scrolled.bind('click', newCardFun);
+      alert($a);
       $layoutContent.scroll(function(event) {
         /* Act on the event */
+        alert($a);
         if($layoutContent.scrollTop()>250) {
           $newButton.hide();
-          $a=$functionArea.width()+(parseInt($functionArea.css('margin-left')));
+          var $a=$functionArea.width()+(parseInt($functionArea.css('margin-left')));
           if($mainContainer.width()>=($a+142)) {
             $newButton_scrolled.css({
               'left': $a+86+'px',
