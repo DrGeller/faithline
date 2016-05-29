@@ -1,0 +1,59 @@
+@charset "utf-8";
+/*draggableElement CSS */
+
+.ui-draggable-dragging {
+	border:solid 3px #bf0f0f;
+	z-index:5;
+}
+.element {
+	position:absolute;
+	width:90px;
+	height:60px;
+	left:5px;
+	top:5px;
+	background-color:#FFF;
+	border:solid 1px #999999;
+	cursor:pointer;
+}
+.element span {
+	font-family:"微软雅黑";
+	font-size:14px;
+	position:absolute;
+	color:#333;
+	left:0px;
+	top:18px;
+	width:90px;
+	height:30px;
+	text-align:center;
+	cursor:pointer;
+}
+.connectNode {
+	position:absolute;
+	width:8px;
+	height:8px;
+	border-radius:4px;
+	background-color:#920000;
+}
+/*伪元素*/
+.element_measuringScope {
+}
+.element_shortCircuitFaultModule {
+}
+.element_electricityTransmationModule {
+}
+.element_electricityTransmationModule span {
+	top:15px !important;
+}
+.element_electricityTransmationModule .elementID {
+	position:absolute;
+	width:40px;
+	height:20px;
+	top:30px;
+	left:25px;
+	text-align:center;
+}
+.element_electricitySource {
+}
+.element_electricitySource span {
+	top:15px !important;
+}

@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* menuBar CSS */
+
+.menuBar {
+	width: 100%;
+	height: 35px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background-color: #bf0f0f;
+	z-index:0;
+	display:none;
+}
+.menuBar_button {
+	width:15px;
+	height:15px;
+	position:absolute;
+	top:5px;
+	cursor:pointer;
+}
+.buttonPresentation {
+	width:30px;
+	font-size: 10px;
+	position:absolute;
+	bottom: -22px;
+	display: none;
+	left: -5px;
+	color: #FFF;
+	background-color: #920000;
+	padding-left:2px;
+	padding-right:2px;
+	padding-top:1px;
+	padding-bottom:1px;
+	text-align:center;
+}
+.menuBar_buttonOutline {
+	width:25px;
+	height:25px;
+	top:5px;
+	position:absolute;
+}
+#newProjectButtonOutline {
+    left:20px;
+}
+#newProjectButton {
+    left:5px;
+	background-image:url(../img/simCircuit_design/buttons/newFileButton.png);
+}
+#openFileButtonOutline {
+	left:55px;
+}
+#openFileButton {
+    left:5px;
+	background-image:url(../Img/simCircuit_design/buttons/openFileButton.png);
+}
+#elementBoxButtonOutline {
+	left:90px;
+}
+#elementBoxButton {
+	left:5px;
+	background-image:url(../img/simCircuit_design/buttons/elementBoxButton.png);
+}
+
+
+

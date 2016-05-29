@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>faithline</title>
+<style type="text/css">
+* {
+	margin:0px;
+	padding:0px;
+	font-family:"微软雅黑";
+}
+html {
+	width:100%;
+	height:100%;
+}
+body {
+	width:100%;
+	height:100%;
+}
+.mainContainer {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:100%;
+	height:100%;
+}
+.welcomeScreen {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:100%;
+	height:100%;
+	background-color:#bf0f0f;
+}
+.welcomeScreen_logo {
+	position:absolute;
+	width:390px;
+	height:150px;
+	background-image:url(img/welcomeScreen_logo.png);
+	display:none;
+}
+</style>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(e) {
+	$welcomeScreen_logo = $('.welcomeScreen_logo');
+	$logoWidth = $welcomeScreen_logo.width();
+	$pageWidth = $('body').width();
+	$pageHeight = $('body').height();
+	$welcomeScreen_logo.css({"left":($pageWidth-$logoWidth)/2+'px',"top":"260px"});
+	$welcomeScreen_logo.delay(500).fadeIn(1000,function() {
+		$welcomeScreen_logo.animate({top:50},{queue:false,duration:1000}).fadeOut(800);
+	});
+});
+</script>
+</head>
+
+<body>
+<div class="mainContainer">
+    <div class="welcomeScreen">
+        <div class="welcomeScreen_logo"></div>
+    </div>
+</div>
+</body>
+</html>
