@@ -7,7 +7,7 @@
   <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1">
   <![endif]-->
-  <link rel="shortcut icon" href="Design/testIcon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="Media/Image/testIcon.ico" type="image/x-icon">
   <link href="https://cdn.bootcss.com/material-design-icons/2.2.3/iconfont/material-icons.css" rel="stylesheet">
   <link href="https://cdn.bootcss.com/material-design-lite/1.1.3/material.css" rel="stylesheet">
   <link href="https://cdn.bootcss.com/animate.css/3.5.1/animate.css" rel="stylesheet">
@@ -154,6 +154,9 @@
     border-bottom-right-radius: 2px;
     background-color: #e9e9e9 !important;
   }
+  .mdl-card.forceZone {
+    
+  }
   .mdl-card.forceZone .mdl-card__media {
     
   }
@@ -165,10 +168,16 @@
   .mdl-card.forceZone .mdl-card__media .mdl-card__supporting-text {
 
   }
+  .mdl-card.userCard {
+    
+  }
   .mdl-card.userCard .mdl-card__media {
     background-color: #FFF !important;
   }
   .mdl-card.userCard .mdl-card__supporting-text {
+    
+  }
+  .mdl-card.missionCard {
     
   }
   .mdl-card.missionCard .mdl-card__media {
@@ -177,18 +186,124 @@
   .mdl-card.missionCard .mdl-card__supporting-text {
     
   }
+  .bannerLogo {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    width: 400px;
+    height: 120px;
+    margin-left: -200px;
+    margin-top: -60px;
+    background-image: url(Media/Image/bannerLogo.png);
+  }
+  .homepage-hero-module {
+    border-right: none;
+    border-left: none;
+    position: relative;
+  }
+  .no-video .video-container video,
+  .touch .video-container video {
+    display: none;
+  }
+  .no-video .video-container .poster,
+  .touch .video-container .poster {
+    display: block !important;
+  }
+  .video-container {
+    position: relative;
+    bottom: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+  }
+  .video-container .poster img {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+  }
+  .video-container .filter {
+    z-index: 100;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+  }
+  .video-container video {
+    position: absolute;
+    z-index: 0;
+    bottom: 0;
+  }
+  .video-container video.fillWidth {
+    width: 100%;
+  }
   </style>
   <script type="text/javascript">
+    function scaleVideoContainer() {
+      var height = $(window).height();
+      var unitHeight = parseInt(height) + 'px';
+      $('.homepage-hero-module').css('height',unitHeight);
+    }
+
+    function initBannerVideoSize(element){
+      $(element).each(function(){
+        $(this).data('height', $(this).height());
+        $(this).data('width', $(this).width());
+      });
+      scaleBannerVideoSize(element);
+    }
+
+    function scaleBannerVideoSize(element){
+      var windowWidth = $(window).width(),
+      windowHeight = $(window).height(),
+      videoWidth,
+      videoHeight;
+      console.log(windowHeight);
+      $(element).each(function(){
+        var videoAspectRatio = $(this).data('height')/$(this).data('width');
+        $(this).width(windowWidth);
+        if(windowWidth < 1000){
+          videoHeight = windowHeight;
+          videoWidth = videoHeight / videoAspectRatio;
+          $(this).css({'margin-top' : 0, 'margin-left' : -(videoWidth - windowWidth) / 2 + 'px'});
+          $(this).width(videoWidth).height(videoHeight);
+        }
+        $('.homepage-hero-module .video-container video').addClass('fadeIn animated');
+      });
+    }
+    function newCardFun() {
+      $userCard.after('<div id="01" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp"></div>');
+      $('#01').hide();
+      $('#01').fadeIn(300);
+      if($layoutContent.scrollTop()<=250) {
+        $layoutContent.animate({scrollTop: 373}, 500);
+      } else {
+        $layoutContent.animate({scrollTop: 373}, 500);
+      }
+    }
+    function forceZoneControlFun() {
+      var $media = $('.forceZone .mdl-card__media');
+      var $supportingText = $('.forceZone .mdl-card__supporting-text');
+
+    }
+    function userCardControlFun() {
+
+    }
     $(document).ready(function() {
       $newButton = $('#newButton');
       $newButton_scrolled = $('#newButton_scrolled');
       $mainContainer = $('.mainContainer');
       $layoutContent = $('.mainContainer .mdl-layout__content');
       $functionArea = $('.mainContainer .mdl-layout__content .functionArea.mdl-grid');
-      $userCard = $('.userCard');
       $forceZone = $('.forceZone');
+      $userCard = $('.userCard');
+      $missionCard = $('.missionCard');
 
-      $layoutContent.scroll(function(event) {
+      $forceZone.hide();
+      $userCard.hide();
+      $missionCard.hide();
+
+      $layoutContent.scroll(function() {
         if($layoutContent.scrollTop()>250) {
           $newButton.hide();
           var $a=$functionArea.width()+(parseInt($functionArea.css('margin-left')));
@@ -209,28 +324,21 @@
         };
       });
 
-      function newCardFun() {
-        $userCard.after('<div id="01" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp"></div>');
-        $('#01').hide();
-        $('#01').fadeIn(300);
-        if($layoutContent.scrollTop()<=250) {
-          $layoutContent.animate({scrollTop: 373}, 500);
-        } else {
-          $layoutContent.animate({scrollTop: 373}, 500);
-        };
-      };
       $newButton.bind('click', newCardFun);
       $newButton_scrolled.bind('click', newCardFun);
-      
-      function forceZoneControlFun() {
-        var $media = $('.forceZone .mdl-card__media');
-        var $supportingText = $('.forceZone .mdl-card__supporting-text');
 
-      }
+      scaleVideoContainer();
 
-      function userCardControlFun() {
+      initBannerVideoSize('.video-container .poster img');
+      initBannerVideoSize('.video-container .filter');
+      initBannerVideoSize('.video-container video');
 
-      }
+      $(window).on('resize', function() {
+        scaleVideoContainer();
+        scaleBannerVideoSize('.video-container .poster img');
+        scaleBannerVideoSize('.video-container .filter');
+        scaleBannerVideoSize('.video-container video');
+      });
     });
   </script>
 </head>
@@ -261,5 +369,18 @@
       <i class="material-icons mdl-color-text--white" role="presentation">add</i>
     </button>
   </div>
+  <div class="homepage-hero-module">
+    <div class="video-container">
+      <div class="filter"></div>
+      <video autoplay loop class="fillWidth">
+        <source src="Media/Video/Blurry-Lights/MP4/Blurry-Lights.mp4" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.
+        <source src="Media/Video/Blurry-Lights/WEBM/Blurry-Lights.webm" type="video/webm" />Your browser does not support the video tag. I suggest you upgrade your browser.
+      </video>
+      <div class="poster hidden">
+        <img src="Img/Blurry-Lights.jpg" alt="">
+      </div>
+    </div>
+  </div>
+  <div class="bannerLogo"></div>
 </body>
 </html>
