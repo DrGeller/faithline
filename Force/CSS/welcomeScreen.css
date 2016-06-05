@@ -1,0 +1,84 @@
+.welcomeScreen {
+  border-right: none;
+  border-left: none;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+}
+.no-video .video-container video,
+.touch .video-container video {
+  display: none;
+}
+.no-video .video-container .poster,
+.touch .video-container .poster {
+  display: block !important;
+}
+.filter {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+.video-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+}
+.video-container .poster img {
+  width: 100%;
+  top: 0px;
+  position: absolute;
+}
+.video-container video {
+  position: absolute;
+  z-index: 0;
+  top: 0px;
+}
+.video-container video.fillWidth {
+  width: 100%;
+}
+.banner {
+  z-index: 5;
+}
+.bannerLogo {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  width: 500px;
+  height: 180px;
+  margin-left: -250px;
+  margin-top: -80px;
+  background-image: url(../Media/Image/bannerLogo.png);
+}
+.bannerTitle {
+  position: absolute;
+  left: 50%;
+  width: 500px;
+  height: 200px;
+  margin-left: -250px;
+  margin-top: -100px;
+  line-height: 200px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 30px;
+  color: #FFF;
+  cursor: default;
+  -webkit-user-select:none;
+     -moz-user-select:none;
+      -ms-user-select:none;
+          user-select:none;
+}
+.bannerButton {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  width: 500px;
+  height: 200px;
+  margin-left: -250px;
+  margin-top: -100px;
+  cursor: pointer;
+  background-image: url(../Media/Image/bannerButtonIcon.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+}
