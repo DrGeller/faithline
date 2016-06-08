@@ -237,6 +237,7 @@
           data: {progressStatus: 'loginProgress'},
           success: function(data,status) {
             $banner.fadeOut('300');
+            console.log(data);
             $welcomeScreen.animate({'bottom': '100%'}, 300,function() {
               $mainContainer.fadeIn('300');
             });
@@ -286,7 +287,7 @@
     </div>
   </div>
   <div class="bannerLogo banner"></div>
-  <div class="bannerTitle banner">让工作变得更简单</div>
+  <div class="bannerTitle banner">让工作变得轻松起来</div>
   <div class="bannerButton banner bounce animated"></div>
 </body>
 </html>
