@@ -38,7 +38,7 @@
          (max-width: 1024px) and (-webkit-max-device-pixel-ratio: 1.5),
          (max-width: 1024px) and (max-resolution: 1.5dppx) {
     body::before {
-      background-image: url('Media/Image/bg_2880.jpg');
+      background-image: url('Media/Image/bg/bg_2880.jpg');
     }
   }
   @media (min-width: 513px)  and (max-width: 1024px) and (-webkit-min-device-pixel-ratio: 1.5),
@@ -46,7 +46,7 @@
          (min-width: 1025px) and (max-width: 2048px) and (-webkit-max-device-pixel-ratio: 1.5),
          (min-width: 1025px) and (max-width: 2048px) and (max-resolution: 1.5dppx)  {
     body::before {
-      background-image: url('Media/Image/bg_2880.jpg');
+      background-image: url('Media/Image/bg/bg_2880.jpg');
     }
   }
   @media (min-width: 1025px) and (-webkit-min-device-pixel-ratio: 1.5),
@@ -54,15 +54,17 @@
          (min-width: 2049px) and (-webkit-max-device-pixel-ratio: 1.5),
          (min-width: 2049px) and (max-resolution: 1.5dppx) {
     body::before {
-      background-image: url('Media/Image/bg_2880.jpg');
+      background-image: url('Media/Image/bg/bg_2880.jpg');
     }
   }
   html body {
     height: 100%;
     overflow: hidden;
+    position: fixed;
   }
   body .mainContainer {
     font-family: 'Roboto', 'Helvetica', sans-serif;
+    overflow: hidden;
   }
   .mainContainer .functionArea {
     max-width: 900px;
@@ -103,8 +105,8 @@
         -ms-flex-direction: column;
             flex-direction: column;
     -webkit-align-items: stretch;
+            align-items: stretch;
     -ms-flex-align: stretch;
-    align-items: stretch;
     min-height: 360px;
     overflow: visible;
     border-radius: 2px;
@@ -116,14 +118,14 @@
     display: -ms-flexbox;
     display: flex;
     -webkit-flex-grow: 1;
+            flex-grow: 1;
     -ms-flex-positive: 1;
-    flex-grow: 1;
     -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
     -webkit-align-items: flex-end;
+            align-items: flex-end;
     -ms-flex-align: end;
-    align-items: flex-end;
     cursor: pointer;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
@@ -237,10 +239,13 @@
           data: {progressStatus: 'loginProgress'},
           success: function(data,status) {
             $banner.fadeOut('300');
-            console.log(data);
-            $welcomeScreen.animate({'bottom': '100%'}, 300,function() {
+            var loginData = $.parseJSON(data);
+            console.log(loginData);
+            $('.video-container .poster img').css('position', 'absolute');
+            $welcomeScreen.animate({'bottom': '100%'},300,function() {
               $mainContainer.fadeIn('300');
             });
+            
           }
         });
       });
@@ -255,7 +260,7 @@
           <div class="mdl-card__media">
             <div class="imageContainer"></div>
           </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-600">中国</div>
+          <div class="mdl-card__supporting-text mdl-color-text--grey-600">统计</div>
         </div>
         <div class="mdl-card mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop mdl-shadow--2dp userCard">
           <button id="newButton" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored mdl-shadow--4dp mdl-js-ripple-effect newButton">
@@ -282,7 +287,7 @@
         <source src="Media/Video/In-And-Out/WEBM/In-And-Out.webm" type="video/webm" />Your browser does not support the video tag. I suggest you upgrade your browser.
       </video>
       <div class="poster hidden">
-        <img src="Media/Image/In-And-Out.jpg" alt="">
+        <img src="Media/Image/bg/In-And-Out.jpg" alt="">
       </div>
     </div>
   </div>

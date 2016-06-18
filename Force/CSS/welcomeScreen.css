@@ -5,12 +5,12 @@
   overflow: hidden;
   width: 100%;
 }
-.no-video .video-container video,
-.touch .video-container video {
+.no-video.video-container video,
+.touch.video-container video {
   display: none;
 }
-.no-video .video-container .poster,
-.touch .video-container .poster {
+.no-video.video-container .poster,
+.touch.video-container .poster {
   display: block !important;
 }
 .filter {
@@ -20,13 +20,15 @@
   z-index: 5;
 }
 .video-container {
-  position: absolute;
+  position: fixed;
   height: 100%;
   width: 100%;
   background-color: #000;
+  overflow: hidden;
 }
 .video-container .poster img {
   width: 100%;
+  height: 100%;
   top: 0px;
   position: absolute;
 }
@@ -42,7 +44,7 @@
   z-index: 5;
 }
 .bannerLogo {
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 35%;
   width: 500px;
@@ -52,7 +54,7 @@
   background-image: url(../Media/Image/bannerLogo.png);
 }
 .bannerTitle {
-  position: absolute;
+  position: fixed;
   left: 50%;
   width: 500px;
   height: 200px;
@@ -70,7 +72,7 @@
           user-select:none;
 }
 .bannerButton {
-  position: absolute;
+  position: fixed;
   left: 50%;
   bottom: 2%;
   width: 500px;
