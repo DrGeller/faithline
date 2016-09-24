@@ -25,11 +25,11 @@
 
 	if($progressStatus == "loginProgress") {
 		$mysql_link = mysql_connect('localhost','root','2925');
-		mysql_select_db('Force',$mysql_link);
+		$a = mysql_select_db('faithline',$mysql_link);
 		mysql_query("SET NAMES UTF8");
 		if($userIP!="unknown") {
-			$userDataResult = mysql_query("select * from userInfo where userIP = '$userIP'");
-			$userDataArray=mysql_fetch_array($userDataResult,MYSQL_ASSOC);
+			$userDataResult = mysql_query("select * from force where userIP = '$userIP'");
+			$userDataArray = mysql_fetch_array($userDataResult,MYSQL_ASSOC);
 			mysql_close($mysql_link);
 		  	echo (json_encode($userDataArray,JSON_UNESCAPED_UNICODE));
 		} else {
