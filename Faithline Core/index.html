@@ -117,6 +117,22 @@
 				//屏幕宽高比为16:10
 			}
 
+      $.ajax({
+        url: '/path/to/file',
+        type: 'POST',
+        dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+        data: {param1: 'value1'},
+      })
+      .done(function() {
+        console.log("success");
+      })
+      .fail(function() {
+        console.log("error");
+      })
+      .always(function() {
+        console.log("complete");
+      });
+      
 		});
 	</script>
 </head>
@@ -128,6 +144,7 @@
 			</div>
       <div class="menuBar">
         <div id="trafficOverview" class="menu">
+          <div class="icon"></div>
           <span>Traffic Overview</span>
         </div>
         <div id="detailedActivity" class="menu">
