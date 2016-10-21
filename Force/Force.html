@@ -32,13 +32,14 @@
     bottom: 0;
     top: 0;
     position: fixed;
+    background-color: #FAFAFA;
   }
   @media (max-width: 512px)  and (-webkit-min-device-pixel-ratio: 1.5),
          (max-width: 512px)  and (min-resolution: 1.5dppx),
          (max-width: 1024px) and (-webkit-max-device-pixel-ratio: 1.5),
          (max-width: 1024px) and (max-resolution: 1.5dppx) {
     body::before {
-      background-image: url('Media/Image/bg/bg_2880.jpg');
+      
     }
   }
   @media (min-width: 513px)  and (max-width: 1024px) and (-webkit-min-device-pixel-ratio: 1.5),
@@ -46,7 +47,7 @@
          (min-width: 1025px) and (max-width: 2048px) and (-webkit-max-device-pixel-ratio: 1.5),
          (min-width: 1025px) and (max-width: 2048px) and (max-resolution: 1.5dppx)  {
     body::before {
-      background-image: url('Media/Image/bg/bg_2880.jpg');
+      
     }
   }
   @media (min-width: 1025px) and (-webkit-min-device-pixel-ratio: 1.5),
@@ -54,7 +55,7 @@
          (min-width: 2049px) and (-webkit-max-device-pixel-ratio: 1.5),
          (min-width: 2049px) and (max-resolution: 1.5dppx) {
     body::before {
-      background-image: url('Media/Image/bg/bg_2880.jpg');
+      
     }
   }
   html body {
@@ -231,6 +232,11 @@
       }, function() {
         $(this).removeClass('bounce animated infinite');
       });
+      $banner.fadeOut('300');
+      $('.video-container .poster img').css('position', 'absolute');
+            $welcomeScreen.animate({'bottom': '100%'},300,function() {
+              $mainContainer.fadeIn('300');
+            });
       $bannerButton.bind('click', function(event) {
         /* Act on the event */
         $.ajax({
@@ -256,20 +262,20 @@
   <div class="mainContainer mdl-layout mdl-js-layout">
     <div class="mdl-layout__content">
       <div class="functionArea mdl-grid">
-        <div class="mdl-card mdl-cell mdl-cell--8-col mdl-shadow--2dp forceZone">
+        <div class="mdl-card mdl-cell mdl-cell--6-col mdl-shadow--1dp forceZone">
           <div class="mdl-card__media">
             <div class="imageContainer"></div>
           </div>
           <div class="mdl-card__supporting-text mdl-color-text--grey-600">统计</div>
         </div>
-        <div class="mdl-card mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop mdl-shadow--2dp userCard">
+        <div class="mdl-card mdl-cell mdl-cell--8-col mdl-cell--6-col-desktop mdl-shadow--1dp userCard">
           <button id="newButton" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored mdl-shadow--4dp mdl-js-ripple-effect newButton">
             <i class="material-icons mdl-color-text--white" role="presentation">add</i>
           </button>
           <div class="mdl-card__media"></div>
           <div class="mdl-card__supporting-text mdl-color-text--grey-600"></div>
         </div>
-        <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp missionCard">
+        <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--1dp missionCard">
           <div class="mdl-card__media"></div>
           <div class="mdl-card__supporting-text mdl-color-text--grey-600"></div>
         </div>

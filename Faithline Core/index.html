@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 	<meta charset="UTF-8">
-	<title>Faithline Core</title>
+	<title>faithline Core</title>
 	<style type="text/css">
 		* {
 			margin: 0px;
 			padding: 0px;
-      font-family: "Microsoft YaHei UI";
+      font-family: 'Roboto', 'Helvetica', sans-serif, 'microsoftYaHei';
 		}
 		body {
 			position: absolute;
@@ -17,38 +17,76 @@
 		}
 		.mainContainer {
 			position: absolute;
-			width: 1200px;
-			height: 800px;
-			left: 50%;
-			top: 4%;
-			margin-left: -600px;
+			width: 100%;
+			height: 100%;
+      min-width: 1200px;
+      min-height: 800px;
 			background-color: #393f4f;
 		}
+    .loginBox {
+      position: absolute;
+      width: 300px;
+      height: 450px;
+      background-color: #f2f0f1;
+      left: 50%;
+      top: 50%;
+      margin-left: -150px;
+      margin-top: -300px;
+      border-radius: 20px;
+      display: none;
+    }
+    .loginBox .title {
+      position: absolute;
+      font-size: 40px;
+      color: #ff6b6b;
+      left:10%;
+      top: 10%;
+    }
+    .loginBox .inputBox {
+      position: absolute;
+      top: 20%;
+      left: 10%;
+    }
+    
 		.sideMenu {
 			position: absolute;
-			width: 240px;
+			width: 20%;
 			height: 100%;
 			background-color: #f2f0f1;
+      display: none;
 		}
 		.sideMenu .topBar {
 			position: absolute;
 			width: 100%;
-			height: 80px;
+			height: 10%;
 			background-color: #ff6b6b;
 		}
-		.sideMenu .topBar .sideMenu_Img01 {
+    .sideMenu .topBar .logo {
+      position: absolute;
+      width: 100%;
+      height: 80px;
+      top: 50%;
+      margin-top: -40px;
+    }
+    .sideMenu .topBar .icon {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+    }
+		.sideMenu .topBar .logo span {
 			position: absolute;
-			width: 148px;
-			height: 34px;
-			left: 10px;
-			top: 50%;
-			margin-top: -17px;
-			background-image: url(Img/sideMenu_Img01.png);
+      width: 200px;
+      height: 80px;
+      left: 65px;
+      line-height: 80px;
+      vertical-align: middle;
+      color: #FAFAFA;
+      font-size: 25px
 		}
 		.sideMenu .menuBar {
 			position: absolute;
 			width: 100%;
-			height: 720px;
+			height: 90%;
 			bottom: 0px;
 		}
     .sideMenu .menuBar .menu {
@@ -72,75 +110,68 @@
     }
 		.navBar {
 			position: absolute;
-			width: 960px;
-			height: 80px;
+			width: 80%;
+			height: 10%;
 			right: 0px;
 			background-color: #5a6378;
+      display: none;
 		}
 		.contentContainer {
 			position: absolute;
 			right: 0px;
-			top: 80px;
-			width: 960px;
-			height: 720px;
+			bottom: 0px;
+			width: 80%;
+			height: 90%;
 		}
 		.chartContainer {
 			position: absolute;
-			width: 940px;
-			height: 450px;
-			left: 10px;
+      width: 1000px;
+      left: 50%;
+      margin-left: -500px;
 		}
+    .chart {
+    }
+    .chartName {
+      position: absolute;
+      left: 0px;
+      top: 40px;
+      font-size: 20px;
+      color: #EEE;
+    }
 	</style>
 	<script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
 	<script src="https://as.alipayobjects.com/g/datavis/g2/2.0.2/index.js"></script>
+  <script src="Core.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//缓存DOM
-			$mainContainer=$('.mainContainer');
-			$sideMenu=$('.sideMenu');
-			$topBar=$('.topBar');
-			$menu=$('.menu');
-			$navBar=$('.navBar');
-
-			//初始化
-			screenWidth=screen.width;
-			screenHeight=screen.height;
-			windowWidth=$('body').width();
-			windowHeight=$('body').height();
-			aspectRatio=Math.round(screenWidth/screenHeight*10)/10;
-			windowAspectRation=Math.round(windowWidth/windowHeight*10)/10;
-			if(aspectRatio=="1.33") {
-				//屏幕宽高比为4:3
-			} else if(aspectRatio=="1.78") {
-				//屏幕宽高比为16:9
-			} else if(aspectRatio=="1.6") {
-				//屏幕宽高比为16:10
-			}
-
-      $.ajax({
-        url: '/path/to/file',
-        type: 'POST',
-        dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-        data: {param1: 'value1'},
-      })
-      .done(function() {
-        console.log("success");
-      })
-      .fail(function() {
-        console.log("error");
-      })
-      .always(function() {
-        console.log("complete");
-      });
+			$mainContainer = $('.mainContainer');
+			$sideMenu = $('.sideMenu');
+			$topBar = $('.topBar');
+			$menu = $('.menu');
+			$navBar = $('.navBar');
+      $contentContainer = $('.contentContainer');
       
+      
+      $sideMenu.fadeIn(300);
+      $navBar.fadeIn(300);
 		});
 	</script>
 </head>
 <body>
 	<div class="mainContainer">
+    <div class="loginBox">
+      <div class="title">faithline Core</div>
+      <div class="inputBox">
+        
+      </div>
+    </div>
 		<div class="sideMenu">
 			<div class="topBar">
-				<div class="sideMenu_Img01"></div>
+				<div class="logo">
+          <div class="icon"></div>
+          <span>faithline Core</span>
+        </div>
 			</div>
       <div class="menuBar">
         <div id="trafficOverview" class="menu">
@@ -165,83 +196,103 @@
       </div>
 		</div>
 		<div class="navBar">
+      <div class="searchBox"></div>
 		</div>
-	  <div class="contentContainer">
-	  	<div class="chartContainer">
-	  		<div id="c1" class="G2Chart"></div>
-	  		<script type="text/javascript">
-	  			var data = [
-	  				{day:'1',value:212},
-	  				{day:'2',value:231},
-	  				{day:'3',value:189},
-	  				{day:'4',value:191},
-	  				{day:'5',value:232},
-	  				{day:'6',value:323},
-	  				{day:'7',value:243},
-	  				{day:'8',value:256},
-	  				{day:'9',value:355},
-	  				{day:'10',value:333},
-	  				{day:'12',value:343},
-	  				{day:'13',value:289},
-	  				{day:'14',value:300},
-	  				{day:'15',value:299},
-	  				{day:'16',value:321},
-	  				{day:'17',value:323},
-	  				{day:'18',value:354},
-	  				{day:'19',value:365},
-	  				{day:'20',value:332},
-	  				{day:'21',value:312},
-	  				{day:'22',value:290},
-	  				{day:'23',value:299},
-	  				{day:'24',value:311},
-	  				{day:'25',value:367},
-	  				{day:'26',value:389},
-	  				{day:'27',value:376},
-	  				{day:'28',value:387},
-	  				{day:'29',value:390},
-	  				{day:'30',value:356},
-	  				{day:'31',value:343},
-	  			];
-	  			var chart = new G2.Chart({
-	  				id:'c1',
-	  				width:940,
-	  				height:450,
-	  				plotCfg:{
-	  					
-	  				}
-	  			});
-	  			chart.source(data);
-	  			chart.axis('value',{
-	  				title:null,
-	  				line: {
-    					lineWidth: 0
-  					},
-	  				grid: {
-    					line: {
-      					stroke: '#d9d9d9',
-      					lineWidth: 1,
-      					lineDash: [4, 4]
-            	}, // 代表栅格线的类型，line polygon circle 只能选择一种 图形属性
-       			},
-	  			});
-	  			chart.axis('day',{
-	  				title:null,
-	  				labels: {
+    <div class="contentContainer">
+      <div class="chartContainer">
+        <div id="overviewChart"></div>
+        <div class="chartName">Overview</div>
+        <script type="text/javascript">
+          var overviewData = [
+            {"time": "0", "pageViews": 10},
+            {"time": "1", "pageViews": 134},
+            {"time": "2", "pageViews": 116},
+            {"time": "3", "pageViews": 122},
+            {"time": "4", "pageViews": 178},
+            {"time": "5", "pageViews": 144},
+            {"time": "6", "pageViews": 125},
+            {"time": "7", "pageViews": 176},
+            {"time": "8", "pageViews": 156},
+            {"time": "9", "pageViews": 195},
+            {"time": "10", "pageViews": 215},
+            {"time": "11", "pageViews": 176},
+            {"time": "12", "pageViews": 167},
+            {"time": "13", "pageViews": 142},
+            {"time": "14", "pageViews": 117},
+            {"time": "15", "pageViews": 113},
+            {"time": "16", "pageViews": 132},
+            {"time": "17", "pageViews": 146},
+            {"time": "18", "pageViews": 169},
+            {"time": "19", "pageViews": 184},
+            {"time": "20", "pageViews": 173},
+            {"time": "21", "pageViews": 83},
+            {"time": "22", "pageViews": 52},
+            {"time": "23", "pageViews": 21}
+          ];
+          var overviewChart = new G2.Chart({
+            id: 'overviewChart',
+            width: 1000,
+            height: 450,
+            plotCfg: {
+              margin: [100,0,30,0]
+            }
+          });
+          overviewChart.source(overviewData);
+          overviewChart.axis('time', {
+            position: 'bottom', // 设置坐标轴的显示位置，可取值 top bottom left right
+            line: {
+              lineWidth: 1, // 设置线的宽度
+              stroke: '#ccc' //  设置线的颜色
+            }, // 设置坐标轴线的样式，如果值为 null，则不显示坐标轴线 图形属性
+            labels: {
               label: {
                 textAlign: 'center', // 文本对齐方向，可取值为： left center right
-                fill: '#404040', //文本的颜色
+                fill: '#FFF', //文本的颜色
                 fontSize: '12', // 文本大小
                 fontWeight: 'bold' // 文本粗细
               }, // 设置坐标轴文本的显示样式，如果值为 null，则不显示坐标轴文本 文本属性
               autoRotate: true // 是否需要自动旋转
             },
-	  			});
-	  			chart.area().position('day*value').shape('smooth');
-	  			chart.line().position('day*value').size(2).shape('smooth');
-	  			chart.render();
-	  		</script>
-	  	</div>
-	  </div>
+            title: null, // 坐标轴标题设置，如果值为 null，则不显示标题 文本属性
+            tickLine: {
+              lineWidth: 1,
+              stroke: '#ccc',
+              value: 5,
+            }, // 坐标点对应的线，null 不显示 图形属性
+            titleOffset: 45, // 设置标题距离轴线的距离
+            labelOffset: 15, // 标轴文本距离轴线的距离
+            grid: {
+              line: {
+                stroke: '#d9d9d9',
+                lineWidth: 1
+              } // 代表栅格线的类型，line polygon circle 只能选择一种 图形属性
+            }, // 坐标轴栅格线的配置信息，默认只有左边的坐标轴带有栅格线，null 为不显示
+            gridAlign: 'start'// 栅格的位置跟坐标点(tick)的对齐方式，当前仅支持 start和middle
+          });
+          overviewChart.axis('pageViews',{
+            line: null,
+            title: null,
+            grid: {
+              line: {
+                stroke: '#d9d9d9',
+                lineWidth: 1
+              } // 代表栅格线的类型，line polygon circle 只能选择一种 图形属性
+            }, // 坐标轴栅格线的配置信息，默认只有左边的坐标轴带有栅格线，null 为不显示
+            gridAlign: 'start'// 栅格的位置跟坐标点(tick)的对齐方式，当前仅支持 start和middle
+          });
+          overviewChart.tooltip(true, {
+            crosshairs: true,
+            crossLine: {
+              stroke: '#d9d9d9',
+              lineWidth: 2
+            }
+          });
+          overviewChart.area().position('time*pageViews').shape('smooth');
+          overviewChart.line().position('time*pageViews').size(2).shape('smooth');
+          overviewChart.render();
+        </script>
+      </div>
+    </div>
 	</div>
 </body>
 </html>
