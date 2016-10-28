@@ -1,8 +1,7 @@
 <?php
 	header('Content-Type:text/html; charset=utf8');
-	$progressStatus = $_POST[progressStatus];
-
 	
+	$progressStatus = $_POST[progressStatus];
 
 	if($progressStatus == 'init') {
 		

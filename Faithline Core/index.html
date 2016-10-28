@@ -67,6 +67,7 @@
       height: 80px;
       top: 50%;
       margin-top: -40px;
+      cursor: default;
     }
     .sideMenu .topBar .icon {
       position: absolute;
@@ -108,6 +109,9 @@
     .sideMenu .menuBar .menu span:hover {
       color: #ff6b6b;
     }
+    .sideMenu .menuBar .menu.actived span {
+      color: #ff6b6b;
+    }
 		.navBar {
 			position: absolute;
 			width: 80%;
@@ -134,9 +138,48 @@
     .chartName {
       position: absolute;
       left: 0px;
-      top: 40px;
+      top: 30px;
+      height: 30px;
       font-size: 20px;
       color: #EEE;
+      line-height: 30px;
+      vertical-align: middle;
+      cursor: default;
+    }
+    .overviewControl {
+      position: absolute;
+      width: 320px;
+      height: 30px;
+      top: 30px;
+      left: 150px;
+    }
+    .overviewControl .controlButton {
+      position: absolute;
+      width: 80px;
+      height: 30px;
+      line-height: 30px;
+      vertical-align: middle;
+      color: #b6bfd0;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .overviewControl .controlButton:hover {
+      color: #EEE;
+    }
+    .overviewControl .controlButton.actived {
+      color: #EEE;
+    }
+    .overviewControl #hourly {
+      left: 0px;
+    }
+    .overviewControl #daily {
+      left: 80px;
+    }
+    .overviewControl #weekly {
+      left: 150px;
+    }
+    .overviewControl #monthly {
+      left: 230px;
     }
 	</style>
 	<script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
@@ -148,11 +191,24 @@
 			$mainContainer = $('.mainContainer');
 			$sideMenu = $('.sideMenu');
 			$topBar = $('.topBar');
-			$menu = $('.menu');
+			$menu = $('.sideMenu .menuBar .menu');
 			$navBar = $('.navBar');
       $contentContainer = $('.contentContainer');
-      
-      
+      $overviewControl = $('.overviewControl');
+      $controlButton = $('.overviewControl .controlButton');
+
+      $controlButton.bind('click', function() {
+        /* Act on the event */
+        $controlButton.removeClass('actived');
+        $(this).addClass('actived');
+      });
+      $menu.bind('click', function() {
+        /* Act on the event */
+        $menu.removeClass('actived');
+        $(this).addClass('actived');
+      });
+
+
       $sideMenu.fadeIn(300);
       $navBar.fadeIn(300);
 		});
@@ -174,7 +230,7 @@
         </div>
 			</div>
       <div class="menuBar">
-        <div id="trafficOverview" class="menu">
+        <div id="trafficOverview" class="menu actived">
           <div class="icon"></div>
           <span>Traffic Overview</span>
         </div>
@@ -200,8 +256,14 @@
 		</div>
     <div class="contentContainer">
       <div class="chartContainer">
-        <div id="overviewChart"></div>
+        <div id="overviewChart" class="chart"></div>
         <div class="chartName">Overview</div>
+        <div class="overviewControl">
+          <div id="hourly" class="controlButton actived">Hourly</div>
+          <div id="daily" class="controlButton">Daily</div>
+          <div id="weekly" class="controlButton">Weekly</div>
+          <div id="monthly" class="controlButton">Monthly</div>
+        </div>
         <script type="text/javascript">
           var overviewData = [
             {"time": "0", "pageViews": 10},
@@ -232,9 +294,9 @@
           var overviewChart = new G2.Chart({
             id: 'overviewChart',
             width: 1000,
-            height: 450,
+            height: 400,
             plotCfg: {
-              margin: [100,0,30,0]
+              margin: [80,0,30,0]
             }
           });
           overviewChart.source(overviewData);
@@ -248,7 +310,7 @@
               label: {
                 textAlign: 'center', // 文本对齐方向，可取值为： left center right
                 fill: '#FFF', //文本的颜色
-                fontSize: '12', // 文本大小
+                fontSize: '10', // 文本大小
                 fontWeight: 'bold' // 文本粗细
               }, // 设置坐标轴文本的显示样式，如果值为 null，则不显示坐标轴文本 文本属性
               autoRotate: true // 是否需要自动旋转

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <title>Faithline</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!--[if lt IE 9]>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1">
+  <![endif]-->
+  <style type="text/css" media="screen">
+    * {
+      outline: none;
+      margin: 0px;
+    }
+    body {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #FAFAFA;
+      color: #333;
+      font-family: "Lato", sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .navBar {
+      position: fixed;
+      width: 100%;
+      height: 60px;
+      left: 0px;
+      top: 0px;
+      border-bottom: 1px solid #ebebeb;
+      padding: 0px 15px 0px 15px;
+      text-align: center;
+      background-color: #FCFCFC;
+      -webkit-box-sizing: border-box;
+      z-index: 1;
+    }
+    .nbContentBlock {
+      position: relative;
+      width: 900px;
+      height: 100%;
+      display: inline-block;
+      text-align: left;
+    }
+    .nbContentBlock .logo {
+      position: relative;
+      display: inline-block;
+    }
+    .coverBlock {
+      position: relative;
+      width: 100%;
+      height: 56%;
+      z-index: 0;
+      background-image: url(Img/01.jpeg);
+      background-position: 50% 40%;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .infoBlock {
+      position: relative;
+      width: 100%;
+      margin-top: -110px;
+      text-align: center;
+      height: 220px;
+    }
+    .topInfoBlock {
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      top: 0px;
+      text-align: left;
+    }
+    .profileCover {
+      position: relative;
+      display: inline-block;
+      width: 220px;
+      height: 220px;
+      background-color: #FAFAFA;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      padding: 9px;
+      border-radius: 4px;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+    }
+    .bottomInfoBlock {
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      bottom: 0px;
+      text-align: left;
+    }
+    .timelineBlock {
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      width: 900px;
+      padding-top: 18px;
+      margin-top: 25px;
+    }
+    .timelineLine {
+      position: absolute;
+      left: 50%;
+      width: 3px;
+      margin-left: -1px;
+      background-color: #A1A2A8;
+      margin-top: -20px;
+    }
+    .leftTimelineColumn {
+
+    }
+    .rightTimelineColumn {
+
+    }
+  </style>
+  <script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      
+    });
+  </script>
+</head>
+<body>
+  <div class="navBar">
+    <div class="nbContentBlock">
+      <div class="logo"></div>
+    </div>
+  </div>
+  <div class="coverBlock"></div>
+  <div class="infoBlock">
+    <div class="topInfoBlock"></div>
+    <div class="profileCover"></div>
+    <div class="bottomInfoBlock"></div>
+  </div>
+  <div class="timelineBlock"></div>
+</body>
+</html>
