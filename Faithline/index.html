@@ -11,6 +11,7 @@
     * {
       outline: none;
       margin: 0px;
+      padding: 0px;
     }
     body {
       position: absolute;
@@ -21,6 +22,20 @@
       font-family: "Lato", sans-serif;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+    }
+    @font-face {font-family: 'webfont';
+      src: url('//at.alicdn.com/t/bv16q7luhw1m7vi.eot'); /* IE9*/
+      src: url('//at.alicdn.com/t/bv16q7luhw1m7vi.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+      url('//at.alicdn.com/t/bv16q7luhw1m7vi.woff') format('woff'), /* chrome、firefox */
+      url('//at.alicdn.com/t/bv16q7luhw1m7vi.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+      url('//at.alicdn.com/t/bv16q7luhw1m7vi.svg#思源黑体-细') format('svg'); /* iOS 4.1- */
+    }
+    .web-font {
+      font-family:"webfont" !important;
+      font-size:16px;font-style:normal;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-stroke-width: 0.2px;
+      -moz-osx-font-smoothing: grayscale;
     }
     .navBar {
       position: fixed;
@@ -43,8 +58,13 @@
       text-align: left;
     }
     .nbContentBlock .logo {
-      position: relative;
-      display: inline-block;
+      position: absolute;
+      width: 140px;
+      height: 50px;
+      background-image: url(Img/faithline_logo.png);
+      left: 0px;
+      top: 50%;
+      margin-top: -25px;
     }
     .coverBlock {
       position: relative;
@@ -52,7 +72,8 @@
       height: 56%;
       z-index: 0;
       background-image: url(Img/01.jpeg);
-      background-position: 50% 40%;
+      background-attachment: fixed;
+      background-position: center -340px;
       background-repeat: no-repeat;
       background-size: cover;
     }
@@ -69,6 +90,61 @@
       height: 50%;
       top: 0px;
       text-align: left;
+      color: #FAFAFA;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.9);
+    }
+    .topInfoBlock .leftInfoBlock {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      text-align: right;
+      padding-right: 140px;
+      bottom: 0px;
+      vertical-align: top;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+    .topInfoBlock .leftInfoBlock span.name {
+      font-weight: 400;
+      font-size: 3em;
+      line-height: 1.45em;
+    }
+    .topInfoBlock .leftInfoBlock span.occupation {
+      font-weight: 300;
+      font-size: 1.5em;
+      display: block;
+    }
+    .topInfoBlock .rightInfoBlock {
+      position: absolute;
+      vertical-align: top;
+      width: 50%;
+      padding-left: 140px;
+      bottom: 0px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      height: 100%;
+      text-align: left;
+      right: 0px;
+    }
+    .topInfoBlock .rightInfoBlock .countBlock {
+      height: 50%;
+      line-height: 3em;
+      overflow: hidden;
+    }
+    .topInfoBlock .rightInfoBlock .countBlock:first-child {
+      line-height: 3.5em;
+    }
+    .topInfoBlock .rightInfoBlock .countBlock span.count {
+      font-weight: 400;
+      font-size: 2.4em;
+    }
+    .topInfoBlock .rightInfoBlock .countBlock span.countName {
+      font-weight: 300;
+      font-size: 1.6em;
+      padding-left: 5px;
+      text-overflow: clip;
     }
     .profileCover {
       position: relative;
@@ -84,12 +160,44 @@
       -webkit-border-radius: 4px;
       -moz-border-radius: 4px;
     }
+    .profileCover .profilePic {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      border-radius: 4px;
+      -moz-border-radius: 4px;
+      -webkit-border-radius: 4px;
+      background-color: #F0F0F0;
+    }
     .bottomInfoBlock {
       position: absolute;
       width: 100%;
       height: 50%;
       bottom: 0px;
       text-align: left;
+    }
+    .bottomInfoBlock .leftInfoBlock {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      left: 0px;
+      padding-right: 140px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+    .bottomInfoBlock .rightInfoBlock {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      right: 0px;
+      padding-left: 140px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+    .infoButton {
+
     }
     .timelineBlock {
       position: relative;
@@ -117,7 +225,7 @@
   <script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
-      
+
     });
   </script>
 </head>
@@ -129,10 +237,37 @@
   </div>
   <div class="coverBlock"></div>
   <div class="infoBlock">
-    <div class="topInfoBlock"></div>
-    <div class="profileCover"></div>
-    <div class="bottomInfoBlock"></div>
+    <div class="topInfoBlock">
+      <div class="leftInfoBlock">
+        <span class="name web-font">Roy Mills</span>
+        <span class="occupation web-font">Professional athlete</span>
+      </div>
+      <div class="rightInfoBlock">
+        <div id="01" class="countBlock">
+          <span class="count web-font">19.55m</span>
+          <span class="countName web-font">likes</span>
+        </div>
+        <div id="02" class="countBlock">
+          <span class="count web-font">154k</span>
+          <span class="countName web-font">talking about him</span>
+        </div>
+      </div>
+    </div>
+    <div class="profileCover">
+      <div class="profilePic"></div>
+    </div>
+    <div class="bottomInfoBlock">
+      <div class="leftInfoBlock">
+        <div class="infoButton"></div>
+        <div class="infoButton"></div>
+      </div>
+      <div class="rightInfoBlock">
+        
+      </div>
+    </div>
   </div>
-  <div class="timelineBlock"></div>
+  <div class="timelineBlock">
+    
+  </div>
 </body>
 </html>
