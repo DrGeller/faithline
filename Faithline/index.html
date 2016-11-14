@@ -24,15 +24,16 @@
       -webkit-font-smoothing: antialiased;
     }
     @font-face {font-family: 'webfont';
-      src: url('//at.alicdn.com/t/bv16q7luhw1m7vi.eot'); /* IE9*/
-      src: url('//at.alicdn.com/t/bv16q7luhw1m7vi.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-      url('//at.alicdn.com/t/bv16q7luhw1m7vi.woff') format('woff'), /* chrome、firefox */
-      url('//at.alicdn.com/t/bv16q7luhw1m7vi.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-      url('//at.alicdn.com/t/bv16q7luhw1m7vi.svg#思源黑体-细') format('svg'); /* iOS 4.1- */
+      src: url('//at.alicdn.com/t/kd01x7l2f5el8fr.eot'); /* IE9*/
+      src: url('//at.alicdn.com/t/kd01x7l2f5el8fr.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+      url('//at.alicdn.com/t/kd01x7l2f5el8fr.woff') format('woff'), /* chrome、firefox */
+      url('//at.alicdn.com/t/kd01x7l2f5el8fr.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+      url('//at.alicdn.com/t/kd01x7l2f5el8fr.svg#NotoSansHans-DemiLight') format('svg'); /* iOS 4.1- */
     }
     .web-font {
       font-family:"webfont" !important;
-      font-size:16px;font-style:normal;
+      font-size:16px;
+      font-style:normal;
       -webkit-font-smoothing: antialiased;
       -webkit-text-stroke-width: 0.2px;
       -moz-osx-font-smoothing: grayscale;
@@ -58,7 +59,8 @@
       text-align: left;
     }
     .nbContentBlock .logo {
-      position: absolute;
+      position: relative;
+      float: left;
       width: 140px;
       height: 50px;
       background-image: url(Img/faithline_logo.png);
@@ -66,15 +68,33 @@
       top: 50%;
       margin-top: -25px;
     }
+    .nbContentBlock .nbButton {
+      position: relative;
+      float: left;
+      width: 60px;
+      height: 50px;
+      left: 10px;
+      top: 50%;
+      margin-top: -25px;
+      line-height: 50px;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 1em;
+      font-weight: 400;
+      cursor: pointer;
+    }
+    .nbContentBlock .nbButton:hover {
+      color: #bf0f0f;
+    }
+    .nbContentBlock .nbButton.actived {
+      color: #bf0f0f;
+    }
     .coverBlock {
       position: relative;
       width: 100%;
       height: 56%;
       z-index: 0;
       background-image: url(Img/01.jpeg);
-      background-attachment: fixed;
-      background-position: center -340px;
-      background-repeat: no-repeat;
       background-size: cover;
     }
     .infoBlock {
@@ -174,7 +194,14 @@
       width: 100%;
       height: 50%;
       bottom: 0px;
-      text-align: left;
+      text-align: center;
+      vertical-align: top;
+    }
+    .bimUnderCover {
+      position: relative;
+      width: 900px;
+      height: 100%;
+      display: inline-block;
     }
     .bottomInfoBlock .leftInfoBlock {
       position: absolute;
@@ -185,6 +212,8 @@
       box-sizing: border-box;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
+      text-align: right;
+      vertical-align: top;
     }
     .bottomInfoBlock .rightInfoBlock {
       position: absolute;
@@ -195,48 +224,76 @@
       box-sizing: border-box;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
+      text-align: left;
+      vertical-align: top;
     }
     .infoButton {
-
+      display: inline-block;
+      width: 50%;
+      text-align: center;
+      font-size: 2em;
+      line-height: 2em;
+      padding: 0px 20px 0px 20px;
+      margin-top: 20px;
+      border: 1px solid transparent;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .infoButton:hover {
+      border-color: #333;
     }
     .timelineBlock {
       position: relative;
       margin-left: auto;
       margin-right: auto;
       width: 900px;
+      height: 500px;
       padding-top: 18px;
       margin-top: 25px;
     }
     .timelineLine {
       position: absolute;
       left: 50%;
+      height: 100%;
       width: 3px;
       margin-left: -1px;
       background-color: #A1A2A8;
       margin-top: -20px;
     }
     .leftTimelineColumn {
-      
+      width: 50%;
+      display: inline-block;
+      text-align: left;
     }
     .rightTimelineColumn {
-      
+      width: 50%;
+      display: inline-block;
+      text-align: right;
+    }
+    .tcBlock {
+
     }
   </style>
   <script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
-
+      
     });
   </script>
 </head>
 <body>
-  <div class="navBar">
+  <div class="navBar web-font">
     <div class="nbContentBlock">
       <div class="logo"></div>
+      <div class="nbButton actived">首页</div>
+      <div class="nbButton">发现</div>
     </div>
   </div>
   <div class="coverBlock"></div>
-  <div class="infoBlock">
+  <div class="infoBlock web-font">
     <div class="topInfoBlock">
       <div class="leftInfoBlock">
         <span class="name web-font">Roy Mills</span>
@@ -244,30 +301,33 @@
       </div>
       <div class="rightInfoBlock">
         <div id="01" class="countBlock">
-          <span class="count web-font">19.55m</span>
-          <span class="countName web-font">likes</span>
+          <span class="count">19.55m</span>
+          <span class="countName">likes</span>
         </div>
         <div id="02" class="countBlock">
-          <span class="count web-font">154k</span>
-          <span class="countName web-font">talking about him</span>
+          <span class="count">154k</span>
+          <span class="countName">talking about him</span>
         </div>
       </div>
     </div>
     <div class="profileCover">
       <div class="profilePic"></div>
     </div>
-    <div class="bottomInfoBlock">
-      <div class="leftInfoBlock">
-        <div class="infoButton"></div>
-        <div class="infoButton"></div>
-      </div>
-      <div class="rightInfoBlock">
-        
+    <div class="bottomInfoBlock web-font">
+      <div class="bimUnderCover">
+        <div class="leftInfoBlock">
+          <div class="infoButton">1</div><div class="infoButton">2</div>
+        </div>
+        <div class="rightInfoBlock">
+          <div class="infoButton">3</div><div class="infoButton">4</div>
+        </div>
       </div>
     </div>
   </div>
   <div class="timelineBlock">
-    
+    <div class="timelineLine"></div>
+    <div class="leftTimelineColumn"> 
+    </div><div class="rightTimelineColumn"></div>
   </div>
 </body>
 </html>
