@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <title>Faithline</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!--[if lt IE 9]>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1">
+  <![endif]-->
+  <style type="text/css" media="screen">
+    * {
+      outline: none;
+      margin: 0px;
+      padding: 0px;
+    }
+    body {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #FAFAFA;
+      color: #333;
+      font-family: "Lato", sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    @font-face {font-family: 'webfont';
+      src: url('//at.alicdn.com/t/kd01x7l2f5el8fr.eot'); /* IE9*/
+      src: url('//at.alicdn.com/t/kd01x7l2f5el8fr.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+      url('//at.alicdn.com/t/kd01x7l2f5el8fr.woff') format('woff'), /* chrome、firefox */
+      url('//at.alicdn.com/t/kd01x7l2f5el8fr.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+      url('//at.alicdn.com/t/kd01x7l2f5el8fr.svg#NotoSansHans-DemiLight') format('svg'); /* iOS 4.1- */
+    }
+    .web-font {
+      font-family:"webfont" !important;
+      font-size:16px;
+      font-style:normal;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-stroke-width: 0.2px;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .navBar {
+      position: fixed;
+      width: 100%;
+      height: 60px;
+      left: 0px;
+      top: 0px;
+      border-bottom: 1px solid #ebebeb;
+      padding: 0px 15px 0px 15px;
+      text-align: center;
+      background-color: #FCFCFC;
+      -webkit-box-sizing: border-box;
+      z-index: 1;
+    }
+    .nbContentBlock {
+      position: relative;
+      width: 900px;
+      height: 100%;
+      display: inline-block;
+      text-align: left;
+    }
+    .nbContentBlock .logo {
+      position: relative;
+      float: left;
+      width: 140px;
+      height: 50px;
+      background-image: url(Img/faithline_logo.png);
+      left: 0px;
+      top: 50%;
+      margin-top: -25px;
+    }
+    .nbContentBlock .nbButton {
+      position: relative;
+      float: left;
+      width: 60px;
+      height: 50px;
+      left: 10px;
+      top: 50%;
+      margin-top: -25px;
+      line-height: 50px;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 1em;
+      font-weight: 400;
+      cursor: pointer;
+    }
+    .nbContentBlock .nbButton:hover {
+      color: #bf0f0f;
+    }
+    .nbContentBlock .nbButton.actived {
+      color: #bf0f0f;
+    }
+    .coverBlock {
+      position: relative;
+      width: 100%;
+      height: 56%;
+    }
+    .coverBlock .cover {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: url(Img/01.jpeg);
+      background-size: cover;
+    }
+    .coverBlock .coverFilter {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(9, 9, 9, 0.7);
+      background: -webkit-linear-gradient(rgba(9, 9, 9, 0.3) 60%, rgba(5, 5, 5, 0.9) 100%);
+      background: -o-linear-gradient(rgba(9, 9, 9, 0.3) 60%, rgba(5, 5, 5, 0.9) 100%);
+      background: linear-gradient(rgba(9, 9, 9, 0.3) 60%, rgba(5, 5, 5, 0.9) 100%);
+    }
+    .infoBlock {
+      position: relative;
+      width: 100%;
+      margin-top: -110px;
+      text-align: center;
+      height: 220px;
+    }
+    .topInfoBlock {
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      top: 0px;
+      text-align: left;
+      color: #FAFAFA;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.9);
+    }
+    .topInfoBlock .leftInfoBlock {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      text-align: right;
+      padding-right: 140px;
+      bottom: 0px;
+      vertical-align: top;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+    .topInfoBlock .leftInfoBlock span.name {
+      font-weight: 400;
+      font-size: 3em;
+      line-height: 1.45em;
+    }
+    .topInfoBlock .leftInfoBlock span.occupation {
+      font-weight: 300;
+      font-size: 1.5em;
+      display: block;
+    }
+    .topInfoBlock .rightInfoBlock {
+      position: absolute;
+      vertical-align: top;
+      width: 50%;
+      padding-left: 140px;
+      bottom: 0px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      height: 100%;
+      text-align: left;
+      right: 0px;
+    }
+    .topInfoBlock .rightInfoBlock .countBlock {
+      height: 50%;
+      line-height: 3em;
+      overflow: hidden;
+    }
+    .topInfoBlock .rightInfoBlock .countBlock:first-child {
+      line-height: 3.5em;
+    }
+    .topInfoBlock .rightInfoBlock .countBlock span.count {
+      font-weight: 400;
+      font-size: 2.4em;
+    }
+    .topInfoBlock .rightInfoBlock .countBlock span.countName {
+      font-weight: 300;
+      font-size: 1.6em;
+      padding-left: 5px;
+      text-overflow: clip;
+    }
+    .profileCover {
+      position: relative;
+      display: inline-block;
+      width: 220px;
+      height: 220px;
+      background-color: #FAFAFA;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      padding: 9px;
+      border-radius: 4px;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+    }
+    .profileCover .profilePic {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      border-radius: 4px;
+      -moz-border-radius: 4px;
+      -webkit-border-radius: 4px;
+      background-color: #F0F0F0;
+    }
+    .bottomInfoBlock {
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      bottom: 0px;
+      text-align: center;
+      vertical-align: top;
+    }
+    .bimUnderCover {
+      position: relative;
+      width: 900px;
+      height: 100%;
+      display: inline-block;
+    }
+    .bottomInfoBlock .leftInfoBlock {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      left: 0px;
+      padding-right: 140px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      text-align: right;
+      vertical-align: top;
+    }
+    .bottomInfoBlock .rightInfoBlock {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      right: 0px;
+      padding-left: 140px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      text-align: left;
+      vertical-align: top;
+    }
+    .infoButton {
+      display: inline-block;
+      width: 50%;
+      text-align: center;
+      font-size: 2em;
+      line-height: 2em;
+      padding: 0px 20px 0px 20px;
+      margin-top: 20px;
+      border: 1px solid transparent;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .infoButton:hover {
+      border-color: #333;
+    }
+    .timelineBlock {
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      width: 900px;
+      padding-top: 18px;
+      margin-top: 25px;
+    }
+    .timelineLine {
+      position: absolute;
+      left: 50%;
+      height: 100%;
+      width: 3px;
+      margin-left: -1px;
+      background-color: #A1A2A8;
+      margin-top: -20px;
+    }
+    .leftTimelineColumn {
+      width: 50%;
+      display: inline-block;
+      text-align: left;
+      vertical-align: top;
+    }
+    .rightTimelineColumn {
+      width: 50%;
+      display: inline-block;
+      text-align: right;
+      vertical-align: top;
+    }
+    .tcBlock {
+      position: relative;
+    }
+    .leftTimelineColumn .tcBlock:after {
+      right: -12px;
+    }
+    .rightTimelineColumn .tcBlock:after {
+      left: -12px;
+    }
+    .tcBlock:after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      display: block;
+      background-color: #FAFAFA;
+      border-radius: 50%;
+      -moz-border-radius: 50%;
+      -webkit-border-radius: 50%;
+      border: 2px solid #A1A2A8;
+      top: 31px;
+    }
+    .tcbContainer {
+      position: relative;
+      display: inline-block;
+    }
+    .leftTimelineColumn .tcbContainer:before {
+      right: -11px;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-left: 11px solid rgba(156, 159, 164, 0.4);
+    }
+    .rightTimelineColumn .tcbContainer:before {
+      left: -11px;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-right: 11px solid rgba(156, 159, 164, 0.4);
+    }
+    .tcbContainer:before {
+      content: "";
+      height: 0px;
+      width: 0px;
+      display: block;
+      position: absolute;
+      top: 31px;
+    }
+    .leftTimelineColumn .tcbContainer:after {
+      right: -10px;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-left: 11px solid #FFF;
+    }
+    .rightTimelineColumn .tcbContainer:after {
+      left: -10px;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-right: 11px solid #FFF;
+    }
+    .tcbContainer:after {
+      content: "";
+      height: 0px;
+      width: 0px;
+      display: block;
+      position: absolute;
+      top: 31px;
+    }
+    .tcBox {
+      width: 415px;
+      min-height: 300px;
+      margin-bottom: 20px;
+      background: #FFF;
+      text-align: left;
+      display: inline-block;
+      border-radius: 4px;
+      -moz-border-radius: 4px;
+      -webkit-border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #E6E6E8;
+    }
+    .tcBox .header {
+      padding: 12px;
+    }
+    .tcBox .header .headerPic {
+      height: 50px;
+      width: 50px;
+      background-size: cover;
+      display: inline-block;
+      border-radius: 3px;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+    }
+    .tcBox .header .headerInfo {
+      display: inline-block;
+      vertical-align: top;
+      font-size: 1.2em;
+      padding: 2px 13px 0;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+    .statisticsBox .commentheader {
+      padding: 9px 12px;
+      border-top: 1px solid rgba(156, 159, 164, 0.25);
+    }
+    .commentheader {
+      padding: 5px 12px;
+    }
+  </style>
+  <script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      
+    });
+  </script>
+</head>
+<body>
+  <div class="navBar web-font">
+    <div class="nbContentBlock">
+      <div class="logo"></div>
+      <div class="nbButton actived">主页</div>
+      <div class="nbButton">发现</div>
+      <div class="nbButton">百科</div>
+      <div class="nbButton">小组</div>
+    </div>
+  </div>
+  <div class="coverBlock">
+    <div class="cover"></div>
+    <div class="coverFilter"></div>
+  </div>
+  <div class="infoBlock web-font">
+    <div class="topInfoBlock">
+      <div class="leftInfoBlock">
+        <span class="name web-font">Roy Mills</span>
+        <span class="occupation web-font">Professional athlete</span>
+      </div>
+      <div class="rightInfoBlock">
+        <div id="01" class="countBlock">
+          <span class="count">19.55m</span>
+          <span class="countName">likes</span>
+        </div>
+        <div id="02" class="countBlock">
+          <span class="count">154k</span>
+          <span class="countName">talking about him</span>
+        </div>
+      </div>
+    </div>
+    <div class="profileCover">
+      <div class="profilePic"></div>
+    </div>
+    <div class="bottomInfoBlock web-font">
+      <div class="bimUnderCover">
+        <div class="leftInfoBlock">
+          <div class="infoButton">工作</div><div class="infoButton">小组</div>
+        </div>
+        <div class="rightInfoBlock">
+          <div class="infoButton">百科</div><div class="infoButton">活动</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="timelineBlock">
+    <div class="timelineLine"></div>
+    <div class="leftTimelineColumn">
+      <!-- start of content box -->
+      <div class="tcBlock">
+        <div class="tcbContainer">
+          <div id="leftBox1" class="tcBox">
+            <div class="header">
+              <div class="headerPic"></div>
+              <div class="headerInfo"></div>
+            </div>
+            <div class="content">
+              <div class="contentHeader"></div>
+              <div class="contentImage"></div>
+              <div class="iconBar"></div>
+              <div class="commentBlock"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end of content box -->
+    </div><div class="rightTimelineColumn">
+      <div class="tcBox statisticsBox">
+        <div class="header"></div>
+        <div class="commentHeader"></div>
+        <div class="commentHeader"></div>
+        <div class="commentHeader"></div>
+        <div class="commentHeader"></div>
+        <div class="commentHeader"></div>
+      </div>
+      <!-- start of content box -->
+      <div class="tcBlock">
+        <div class="tcbContainer">
+          <div id="rightBox1" class="tcBox">
+            <div class="header">
+              <div class="headerPic"></div>
+              <div class="headerInfo"></div>
+            </div>
+            <div class="content">
+              <div class="contentHeader"></div>
+              <div class="contentImage"></div>
+              <div class="iconBar"></div>
+              <div class="commentBlock"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end of content box -->
+    </div>
+  </div>
+</body>
+</html>
