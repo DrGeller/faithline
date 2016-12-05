@@ -2,14 +2,14 @@
 	header('Content-Type:text/html; charset=utf8');
 	
 	$progressStatus = $_POST[progressStatus];
-
+	
 	if($progressStatus == 'init') {
 		
-	} else if($progressStatus == 'signin') {
+	} else if($progressStatus == 'login') {
 		
-	}	else if($progressStatus == 'signup') {
+	} else if($progressStatus == 'regist') {
 		
-	} else if($progressStatus == 'signout') {
+	} else if($progressStatus == 'logout') {
 		
 	}
 ?>

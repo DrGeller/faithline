@@ -16,7 +16,7 @@ if(clientData.aspectRatio=="1.33") {
 }
 //核心函数
 Core = {
-  AJAXcon: function(obj,progressStatus,callbackFun) {
+  AJAXcon: function(obj, progressStatus, callbackFun) {
     obj.projectName = $('title').text();
     obj.progressStatus = progressStatus;
     $.ajax({
@@ -28,6 +28,6 @@ Core = {
   }
 }
 //初始化
-Core.AJAXcon(clientData,'init',function(data) {
+Core.AJAXcon(clientData, 'init', function(data) {
   console.log(data);
 });

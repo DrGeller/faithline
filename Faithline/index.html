@@ -23,7 +23,8 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
-    @font-face {font-family: 'webfont';
+    @font-face {
+      font-family: 'webfont';
       src: url('//at.alicdn.com/t/kd01x7l2f5el8fr.eot'); /* IE9*/
       src: url('//at.alicdn.com/t/kd01x7l2f5el8fr.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
       url('//at.alicdn.com/t/kd01x7l2f5el8fr.woff') format('woff'), /* chrome、firefox */
@@ -38,7 +39,7 @@
       -webkit-text-stroke-width: 0.2px;
       -moz-osx-font-smoothing: grayscale;
     }
-    .welcomeScreen {
+    .mainContainer {
       overflow: hidden;
       width: 100%;
       height: 100%;
@@ -79,7 +80,7 @@
       top: 0px;
     }
     .videoContainer video.fillWidth {
-      height: 100%;
+      width: 100%;
     }
     .loginBox {
       position: relative;
@@ -105,7 +106,14 @@
       -moz-box-sizing: border-box;
       border: solid 1px #E1E1E1;
     }
-    .logo {
+    .loginBlock {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+    }
+    .loginBlock .logo {
       position: relative;
       display: inline-block;
       margin-top: 30px;
@@ -138,16 +146,16 @@
       -moz-box-sizing: border-box;
       color: #A1A1A1;
     }
-    .inputContainer span {
-      position: absolute;
-      height: 100%;
-      line-height: 40px;
-      vertical-align: middle;
-      left: 8px;
-      top: 0px;
-      color: #A1A1A1;
+    .buttonContainer {
+      position: relative;
+      display: inline-block;
+      margin-top: 20px;
+      border-radius: 2px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
     }
-    .inputContainer div.button {
+    .buttonContainer div.button {
       position: relative;
       display: inline-block;
       width: 150px;
@@ -165,15 +173,47 @@
       color: #bf0f0f;
       font-weight: 600;
     }
-    .inputContainer div.button#login {
+    .loginBlock .buttonContainer div.button#login {
       margin-right: 20px;
       background-color: #bf0f0f;
       color: #FAFAFA;
     }
-    .inputContainer.rbButton {
+    .loginBox .registBlock {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+      overflow: hidden;
+      text-align: left;
       display: none;
     }
-    .inputContainer.rbButton div.button#commit {
+    .registBlock .logo {
+      position: relative;
+      width: 140px;
+      height: 50px;
+      margin-left: 100px;
+      margin-top: 50px;
+      margin-bottom: 20px;
+      background-image: url(Img/faithline_logo.png);
+    }
+    .registBlock .inputContainer {
+      margin-left: 110px;
+      border-radius: 0px;
+    }
+    .registBlock .inputContainer input.inputText {
+      border: none;
+      border-bottom: solid 1px #E1E1E1;
+      font-size: 14px;
+    }
+    .registBlock .buttonContainer.rb {
+      position: absolute;
+      display: block;
+      margin-left: -25px;
+      left: 50%;
+      bottom: 80px;
+    }
+    .registBlock .buttonContainer.rb div.button.rb#next {
       width: 50px;
       height: 50px;
       border-radius: 25px;
@@ -184,49 +224,97 @@
       line-height: 50px;
       vertical-align: middle;
     }
+    .registBlock .buttonContainer.rb span {
+      position: absolute;
+      display: block;
+      width: 80px;
+      height: 20px;
+      line-height: 20px;
+      vertical-align: middle;
+      text-align: center;
+      color: #333;
+      font-size: 14px;
+      left: 40px;
+      top: 50%;
+      margin-top: -10px;
+      cursor: pointer;
+    }
   </style>
   <script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
   <script src="../faithline Core/Core.js" type="text/javascript"></script>
   <script type="text/javascript">
     $(document).ready(function() {
       //缓存DOM
-      $inputContainer = $('.loginBox .inputContainer');
-      $inputText = $('.inputText');
-      $inputTip = $('.inputContainer span');
-      $userName = $('#userName');
-      $password = $('#password');
-      $loginButton = $('.loginBox .button');
-      $login = $('.button#login');
-      $regist = $('.button#regist');
       $loginBox = $('.loginBox');
       $loginBoxBg = $('.loginBoxBg');
-      $loginBoxLogo = $('.loginBox .logo');
-      $rbButton = $('.inputContainer.rbButton');
+      $inputText = $('.inputContainer .inputText');
 
-      $inputTip.bind('click', function(event) {
-        $(this).prev().focus();
-      });
+      $loginBlock = $('.loginBox .loginBlock');
+      $lbInputContainer = $('.loginBlock .inputContainer');
+      
+      $lbUserName = $('.lb#userName');
+      $lbPassword = $('.lb#password');
+      $loginButton = $('.loginBlock .button.lb');
+      $lbLogin = $('.loginBlock .button.lb#login');
+      $lbRegist = $('.loginBlock .button.lb#regist');
+      
+      $registBlock = $('.loginBox .registBlock');
+      $rbUserName = $('.rb#userName');
+      $rbPassword = $('.rb#password');
+      $rbEmail = $('.rb#email');
+      $rbPhone = $('.rb#phone');
+      $rbNextButton = $('.registBlock .buttonContainer.rb div.button.rb#next');
+      $rbCancelButton = $('.registBlock .buttonContainer.rb span');
 
-      $inputText.bind('keypress', function(event) {
-        $(this).css('color', '#333').next().hide();
-        if($userName.val()!='' && $password.val()!='') {
-          $login.bind('click', function(event) {
-            
+      $inputText.bind('focus', function(event) {
+        if($(this).val()=='用户名'||$(this).val()=='密码'||$(this).val()=='邮箱'||$(this).val()=='手机') {
+          $tempVal = $(this).val();
+          $(this).val('');
+          $(this).css('color', '#333');
+          $(this).bind('blur', function(event) {
+            if($(this).val()=='') {
+              $(this).css('color', '#A1A1A1');
+              $(this).val($tempVal);
+            }  
           });
         }
       });
-      $regist.bind('click', function(event) {
-        $loginBoxLogo.hide();
-        $inputContainer.hide();
-        $rbButton.css('display', 'inline-block');;
-        $loginBox.animate({width:800,height:600,marginTop:-360}, 300);
+      
+      //登录提交处理
+      $lbLogin.bind('click', function(event) {    
+        if($lbUserName.val()!='' && $lbPassword.val()!='') {
+          if($lbUserName.val()!='用户名' && $lbPassword.val()!='密码') {
+            console.log($lbUserName.val()+' '+$lbPassword.val());
+          }
+        }
+      });
+      $lbRegist.bind('click', function(event) {
+        $loginBlock.hide();
+        $loginBox.animate({width:800,height:600,marginTop:-360}, 300, function() {
+          $registBlock.show();
+        });
         $loginBoxBg.css('background-color', '#FFF').animate({opacity:1}, 300);
       });
+      //注册提交处理
+      $rbNextButton.bind('click', function() {
+        if($rbUserName.val()!=''&&$rbPassword.val()!=''&&$rbEmail.val()!=''&&$rbPhone.val()!='') {
+          if($rbUserName.val()!='用户名'&&$rbPassword.val()!='密码'&&$rbEmail.val()!='邮箱'&&$rbPhone.val()!='手机') {
+            console.log($rbUserName.val()+' '+$rbPassword.val()+' '+$rbEmail.val()+' '+$rbPhone.val());
+          }
+        }
+      });
+      $rbCancelButton.bind('click', function() {
+        $registBlock.hide();
+        $loginBox.animate({width:400,height:400,marginTop:-280}, 300, function() {
+          $loginBlock.show();
+        });
+        $loginBoxBg.css('background-color', '#FAFAFA').animate({opacity:0.8}, 300);
+      })
     });
   </script>
 </head>
 <body>
-  <div class="welcomeScreen">
+  <div class="mainContainer">
     <div class="filter"></div>
     <div class="videoContainer">
       <video autoplay loop class="fillWidth">
@@ -234,26 +322,43 @@
         <source src="Media/Video/In-And-Out/WEBM/In-And-Out.webm" type="video/webm" />Your browser does not support the video tag. I suggest you upgrade your browser.
       </video>
       <div class="poster hidden">
-        <img src="Media/Image/bg/In-And-Out.jpg" alt="">
+        <img src="Media/Image/bg/In-And-Out.jpg">
       </div>
     </div>
     <div class="loginBox">
       <div class="loginBoxBg"></div>
-      <div class="logo"></div>
-      <div class="inputContainer web-font">
-        <input id="userName" class="inputText" type="text">
-        <span>用户名</span>
+      <div class="loginBlock">
+        <div class="logo"></div>
+        <div class="inputContainer web-font">
+          <input id="userName" class="inputText lb" type="text" value="用户名">
+        </div>
+        <div class="inputContainer web-font">
+          <input id="password" class="inputText lb" type="text" value="密码">
+        </div>
+        <div class="buttonContainer web-font">
+          <div id="login" class="button lb">登录</div>
+        </div><div class="buttonContainer web-font">
+          <div id="regist" class="button lb">注册</div>
+        </div>
       </div>
-      <div class="inputContainer web-font">
-        <input id="password" class="inputText" type="password">
-        <span>密码</span>
-      </div>
-      <div class="inputContainer web-font">
-        <div id="login" class="button">登录</div>
-      </div><div class="inputContainer web-font">
-        <div id="regist" class="button">注册</div>
-      </div><div class="inputContainer rbButton web-font">
-        <div id="commit" class="button">下一步</div>
+      <div class="registBlock">
+        <div class="logo"></div>
+        <div class="inputContainer web-font">
+          <input id="userName" class="inputText rb" type="text" value="用户名">
+        </div>
+        <div class="inputContainer web-font">
+          <input id="password" class="inputText rb" type="text" value="密码">
+        </div>
+        <div class="inputContainer web-font">
+          <input id="email" class="inputText rb" type="text" value="邮箱">
+        </div>
+        <div class="inputContainer web-font">
+          <input id="phone" class="inputText rb" type="text" value="手机">
+        </div>
+        <div class="buttonContainer rb web-font">
+          <div id="next" class="button rb">下一步</div>
+          <span>取消</span>
+        </div>
       </div>
     </div>
   </div>
