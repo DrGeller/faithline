@@ -4,8 +4,6 @@
 	/*Ajax数据*/
 	$progressStatus = $_REQUEST['progressStatus'];
 	
-	
-	
 	if($progressStatus=='loginProgress') {
 		$loginName = $_REQUEST['loginName'];
 	  $loginPassword = $_REQUEST['loginPassword'];
