@@ -240,8 +240,8 @@
       cursor: pointer;
     }
   </style>
-  <script src="JS/jquery-3.1.1/jquery-3.1.1.min.js"></script>
-  <script src="../faithline Core/Core.js" type="text/javascript"></script>
+  <script src="JS/jquery-3.1.1/jquery-3.1.1.js"></script>
+  <script src="../faithline_Core/Core.js" type="text/javascript"></script>
   <script type="text/javascript">
     $(document).ready(function() {
       //缓存DOM
@@ -286,15 +286,13 @@
           if($lbUserName.val()!='用户名' && $lbPassword.val()!='密码') {
             userLogin = {
               userName: $lbUserName.val(),
-              password: $lbPassword.val()
+              password: $lbPassword.val(),
             }
-            console.log($lbUserName.val()+' '+$lbPassword.val());
-            Core.AJAXcon(userLogin, 'login', function(data) {
-              if(data=='1') {
-                console.log(data);
-                window.navigate('mainPage.html');
+            Core.AJAXcon(userLogin,'login',function(data) {
+              if(data=='01') {
+                window.location.href='mainPage.html';
               }
-            });
+            })
           }
         }
       });

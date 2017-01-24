@@ -20,7 +20,7 @@ Core = {
     obj.projectName = $('title').text();
     obj.progressStatus = progressStatus;
     $.ajax({
-      url: '../faithline Core/Core.php',
+      url: '../faithline_Core/Core.php',
       type: 'POST',
       data: obj,
       success: callbackFun

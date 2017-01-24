@@ -4,7 +4,7 @@
 	$progressStatus = $_POST[progressStatus];
 	
 	if($progressStatus == 'init') {
-		
+		echo 'ok';
 	} else if($progressStatus == 'login') {
 		$userName = $_POST[userName];
 		$passWord = $_POST[passWord];
@@ -15,11 +15,11 @@
 		$searchResult02 = mysql_query("select * from userInfo where password = '$password'");
 		$searchData01 = mysql_fetch_array($searchResult01);
 		$searchData02 = mysql_fetch_array($searchResult02);
-		if($searchData01['userName']==$loginName && $searchData02['password']==$password) {
-			echo mysql.error;
-		} else if($searchData01['userName']!=$loginName) {
+		if($searchData01['userName']==$userName && $searchData02['password']==$password) {
+			echo '01';
+		} else if($searchData01['userName']!=$userName) {
 			echo '02';
-		} else if($userDataArray02['userPassword']!=$password) {
+		} else if($searchData02['userPassword']!=$password) {
 			echo '03';
 		}
 	} else if($progressStatus == 'regist') {

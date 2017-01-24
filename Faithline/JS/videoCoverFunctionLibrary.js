@@ -4,7 +4,7 @@ function scaleVideoContainer() {
   $('.welcomeScreen').css('height',unitHeight);
 }
 
-function initBannerVideoSize(element){
+function initBannerVideoSize(element) {
   $(element).each(function(){
     $(this).data('height', $(this).height());
     $(this).data('width', $(this).width());
@@ -12,7 +12,7 @@ function initBannerVideoSize(element){
   scaleBannerVideoSize(element);
 }
 
-function scaleBannerVideoSize(element){
+function scaleBannerVideoSize(element) {
   var windowWidth = $(window).width(),
   windowHeight = $(window).height(),
   videoWidth,
