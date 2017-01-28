@@ -1,9 +1,11 @@
 //Core.js
+//DisplayEngine
+$body = $('body');
 var clientData = {
   scrW: screen.width,
   scrH: screen.height,
-  winW: $('body').width(),
-  winH: $('body').height(),
+  winW: $body.width(),
+  winH: $body.height(),
   aspectRatio: Math.round(screen.width/screen.height*10)/10,
   winAspectRation: Math.round($('body').width()/$('body').height()*10)/10 
 }
