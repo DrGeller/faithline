@@ -1,0 +1,15 @@
+/*style*/
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    height: 100%;
+}
+
+.mainContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
