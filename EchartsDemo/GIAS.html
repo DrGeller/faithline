@@ -38,7 +38,7 @@
       background-color: #fafafa;
       margin-left: auto;
       margin-right: auto;
-      border:2px solid #bf0f0f;
+      border: 2px solid #bf0f0f;
     }
 
     .uploadBox::before {
@@ -98,6 +98,7 @@
       display: none;
       background-color: #fafafa;
     }
+
     .filePreview .tableContainer {
       position: absolute;
       width: 1580px;
@@ -105,6 +106,7 @@
       margin: 0 10px 0 10px;
       bottom: 0px;
     }
+
     .tableContainer table {
       position: absolute;
       width: 100%;
@@ -112,24 +114,30 @@
       box-sizing: border-box;
       border-collapse: collapse;
     }
+
     table thead {
       height: 60px;
     }
+
     table thead tr th {
       width: 20%;
       height: 60px;
     }
+
     table thead tr th:last-child {
       width: 40%;
     }
+
     table tbody {
       position: absolute;
       height: 390px;
       overflow: auto;
     }
+
     table tbody tr {
       height: 30px;
     }
+
     table tr td {
       width: 20%;
       height: 30px;
@@ -140,11 +148,12 @@
       border: 1px solid #181818;
       box-sizing: border-box;
     }
+
     table tr td:last-child {
       width: 40%;
     }
   </style>
-  
+
 </head>
 
 <body>
@@ -164,7 +173,7 @@
       </div>
     </div>
     <script type="text/javascript">
-       function animation(obj, keyFrames, time, mode) {
+      function animation(obj, keyFrames, time, mode) {
         obj.style.animation = keyFrames + " " + time;
         obj.style.webkitAnimation = keyFrames + " " + time;
         obj.style.mozAnimation = keyFrames + " " + time;
@@ -172,6 +181,7 @@
         obj.style.animationFillMode = mode;
         obj.style.webkitAnimationFillMode = mode;
       }
+
       function selectFile() {
         var fileSelector = document.getElementById("fileSelector");
         fileSelector.click();
@@ -180,6 +190,7 @@
       var uploadBox = document.getElementById("uploadBox");
       var filePreview = document.getElementById("filePreview");
       var fileTable = document.getElementById("fileTable");
+
       function imFile(obj) {
         if (!obj.files) {
           return
@@ -215,26 +226,25 @@
           fileTable.appendChild(thead);
           tbody = document.createElement("tbody");
           fileTable.appendChild(tbody);
-          for(var i=0;i<=999;i++) {
-              tr = document.createElement("tr");
-              td = document.createElement("td");
-              td.appendChild(document.createTextNode(a[i].用户名称));
-              tr.appendChild(td);
-              td = document.createElement("td");
-              td.appendChild(document.createTextNode(a[i].用户编码));
-              tr.appendChild(td);
-              td = document.createElement("td");
-              td.appendChild(document.createTextNode(a[i].用电类别));
-              tr.appendChild(td);
-              td = document.createElement("td");
-              td.appendChild(document.createTextNode(a[i].用电地址));
-              tr.appendChild(td);
-              tbody.appendChild(tr);
+          for (var i = 0; i <= 999; i++) {
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.appendChild(document.createTextNode(a[i].用户名称));
+            tr.appendChild(td);
+            td = document.createElement("td");
+            td.appendChild(document.createTextNode(a[i].用户编码));
+            tr.appendChild(td);
+            td = document.createElement("td");
+            td.appendChild(document.createTextNode(a[i].用电类别));
+            tr.appendChild(td);
+            td = document.createElement("td");
+            td.appendChild(document.createTextNode(a[i].用电地址));
+            tr.appendChild(td);
+            tbody.appendChild(tr);
           }
           filePreview.style.display = "block";
         }
       }
-      
     </script>
   </div>
 </body>
