@@ -7,6 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>GIAS DEMO</title>
   <script type="text/javascript" src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="./css/animation.css" />
   <style type="text/css">
     * {
       margin: 0px;
@@ -26,8 +27,7 @@
       height: 100%;
       left: 0px;
       top: 0px;
-      background-color: #000000;
-      opacity: 0.8;
+      background-color: #ececec;
     }
 
     .mainContainer .uploadBox {
@@ -38,6 +38,7 @@
       background-color: #fafafa;
       margin-left: auto;
       margin-right: auto;
+      border:2px solid #bf0f0f;
     }
 
     .uploadBox::before {
@@ -45,33 +46,26 @@
       display: table;
     }
 
-    .uploadBox div:first-child {
+    .uploadBox .logo {
       position: relative;
-      margin-top: 40px;
       width: 100%;
-      height: 50px;
-      line-height: 50px;
+      height: 100px;
+      margin-top: 80px;
+      line-height: 100px;
       vertical-align: middle;
       text-align: center;
-      font-size: 2em;
-    }
-
-    .uploadBox .filePreview {
-      position: relative;
-      width: auto;
-      height: 220px;
-      box-sizing: border-box;
-      margin: 10px;
-      border: 1px solid #2c2c2c;
+      font-size: 24px;
+      color: #181818;
     }
 
     .uploadBox .inputFile {
-      position: absolute;
+      position: relative;
       width: 400px;
       height: 50px;
       left: 50%;
       margin-left: -200px;
     }
+
     .inputFile .uploadButton {
       position: absolute;
       width: 100px;
@@ -88,48 +82,160 @@
       color: #ffffff;
       cursor: pointer;
     }
+
     .uploadButton:hover {
       background-color: #920000;
     }
+
+    .mainContainer .filePreview {
+      position: absolute;
+      width: 1600px;
+      height: 900px;
+      left: 50%;
+      top: 30px;
+      margin-left: -800px;
+      box-sizing: border-box;
+      display: none;
+      background-color: #fafafa;
+    }
+    .filePreview .tableContainer {
+      position: absolute;
+      width: 1580px;
+      height: 450px;
+      margin: 0 10px 0 10px;
+      bottom: 0px;
+    }
+    .tableContainer table {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      border-collapse: collapse;
+    }
+    table thead {
+      height: 60px;
+    }
+    table thead tr th {
+      width: 20%;
+      height: 60px;
+    }
+    table thead tr th:last-child {
+      width: 40%;
+    }
+    table tbody {
+      position: absolute;
+      height: 390px;
+      overflow: auto;
+    }
+    table tbody tr {
+      height: 30px;
+    }
+    table tr td {
+      width: 20%;
+      height: 30px;
+      font-size: 12px;
+      text-align: center;
+      line-height: 100%;
+      vertical-align: middle;
+      border: 1px solid #181818;
+      box-sizing: border-box;
+    }
+    table tr td:last-child {
+      width: 40%;
+    }
   </style>
+  
 </head>
 
 <body>
   <div class="mainContainer">
-    <div class="uploadBox">
-      <div>点击按钮上传Excel文件</div>
-      <div id="filePreview" class="filePreview"></div>
+    <div id="uploadBox" class="uploadBox">
+      <div class="logo">点击上传EXCEL文件</div>
       <div class="inputFile">
         <input id="fileSelector" type="file" style="position:absolute;opacity:0;" onchange="imFile(this)" />
-        <div class="uploadButton" onclick="selectFile()"><span>上传</span></div>
+        <div class="uploadButton" onclick="selectFile()">
+          <span>上传</span>
+        </div>
       </div>
-      <script type="text/javascript">
-        function selectFile() {
-          var fileSelector = document.getElementById("fileSelector");
-          fileSelector.click();
-        }
-        var workbook;
-        var filePreview = document.getElementById("");
-        function imFile(obj) {
-          if(!obj.files) {
-            return
-          }
-          var f = obj.files[0];
-          //console.log(f);
-          var reader = new FileReader();
-          reader.readAsBinaryString(f);
-          reader.onload = function(e) {
-            e = e || window.event;
-            var data = e.target.result;
-            workbook = XLSX.read(data, {
-              type: "binary"
-            });
-            var a = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
-            console.log(a);
-          }
-        } 
-      </script>
     </div>
+    <div id="filePreview" class="filePreview">
+      <div class="tableContainer">
+        <table id="fileTable" class="fileTable"></table>
+      </div>
+    </div>
+    <script type="text/javascript">
+       function animation(obj, keyFrames, time, mode) {
+        obj.style.animation = keyFrames + " " + time;
+        obj.style.webkitAnimation = keyFrames + " " + time;
+        obj.style.mozAnimation = keyFrames + " " + time;
+        obj.style.oAnimation = keyFrames + " " + time;
+        obj.style.animationFillMode = mode;
+        obj.style.webkitAnimationFillMode = mode;
+      }
+      function selectFile() {
+        var fileSelector = document.getElementById("fileSelector");
+        fileSelector.click();
+      }
+      var workbook;
+      var uploadBox = document.getElementById("uploadBox");
+      var filePreview = document.getElementById("filePreview");
+      var fileTable = document.getElementById("fileTable");
+      function imFile(obj) {
+        if (!obj.files) {
+          return
+        }
+        var f = obj.files[0];
+        //console.log(f);
+        var reader = new FileReader();
+        reader.readAsBinaryString(f);
+        reader.onload = function (e) {
+          e = e || window.event;
+          var data = e.target.result;
+          workbook = XLSX.read(data, {
+            type: "binary"
+          });
+          var a = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
+          console.log(a.length);
+          animation(uploadBox, "fadeOut", "0.4s", "forwards");
+          thead = document.createElement("thead");
+          tr = document.createElement("tr");
+          th = document.createElement("th");
+          th.appendChild(document.createTextNode("用户名称"));
+          tr.appendChild(th);
+          th = document.createElement("th");
+          th.appendChild(document.createTextNode("用户编码"));
+          tr.appendChild(th);
+          th = document.createElement("th");
+          th.appendChild(document.createTextNode("用电类别"));
+          tr.appendChild(th);
+          th = document.createElement("th");
+          th.appendChild(document.createTextNode("用电地址"));
+          tr.appendChild(th);
+          thead.appendChild(tr);
+          fileTable.appendChild(thead);
+          tbody = document.createElement("tbody");
+          fileTable.appendChild(tbody);
+          for(var i=0;i<=999;i++) {
+              tr = document.createElement("tr");
+              td = document.createElement("td");
+              td.appendChild(document.createTextNode(a[i].用户名称));
+              tr.appendChild(td);
+              td = document.createElement("td");
+              td.appendChild(document.createTextNode(a[i].用户编码));
+              tr.appendChild(td);
+              td = document.createElement("td");
+              td.appendChild(document.createTextNode(a[i].用电类别));
+              tr.appendChild(td);
+              td = document.createElement("td");
+              td.appendChild(document.createTextNode(a[i].用电地址));
+              tr.appendChild(td);
+              tbody.appendChild(tr);
+          }
+          filePreview.style.display = "block";
+        }
+      }
+      
+    </script>
   </div>
 </body>
 
