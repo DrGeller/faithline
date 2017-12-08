@@ -40,6 +40,57 @@
       margin-right: auto;
     }
 
+    @keyframes scaleAnimation {
+      from {
+        width: 600px;
+        height: 400px;
+      }
+      to {
+        width: 80%;
+        height: 85%;
+        margin-top: 50px;
+      }
+    }
+
+    /* Firefox */
+    @-moz-keyframes scaleAnimation {
+      from {
+        width: 600px;
+        height: 400px;
+      }
+      to {
+        width: 80%;
+        height: 85%;
+        margin-top: 50px;
+      }
+    }
+
+    /* Safari 和 Chrome */
+    @-webkit-keyframes scaleAnimation {
+      from {
+        width: 600px;
+        height: 400px;
+      }
+      to {
+        width: 80%;
+        height: 85%;
+        margin-top: 50px;
+      }
+    }
+
+    /* Opera */
+    @-o-keyframes scaleAnimation {
+      from {
+        width: 600px;
+        height: 400px;
+      }
+      to {
+        width: 80%;
+        height: 85%;
+        margin-top: 50px;
+      }
+    }
+
     .uploadBox::before {
       content: "";
       display: table;
@@ -59,19 +110,20 @@
     .uploadBox .filePreview {
       position: relative;
       width: auto;
-      height: 220px;
+      height: 55%;
       box-sizing: border-box;
       margin: 10px;
       border: 1px solid #2c2c2c;
     }
 
     .uploadBox .inputFile {
-      position: absolute;
+      position: relative;
       width: 400px;
       height: 50px;
       left: 50%;
       margin-left: -200px;
     }
+
     .inputFile .uploadButton {
       position: absolute;
       width: 100px;
@@ -88,6 +140,7 @@
       color: #ffffff;
       cursor: pointer;
     }
+
     .uploadButton:hover {
       background-color: #920000;
     }
@@ -96,12 +149,14 @@
 
 <body>
   <div class="mainContainer">
-    <div class="uploadBox">
+    <div id="uploadBox" class="uploadBox">
       <div>点击按钮上传Excel文件</div>
       <div id="filePreview" class="filePreview"></div>
       <div class="inputFile">
         <input id="fileSelector" type="file" style="position:absolute;opacity:0;" onchange="imFile(this)" />
-        <div class="uploadButton" onclick="selectFile()"><span>上传</span></div>
+        <div class="uploadButton" onclick="selectFile()">
+          <span>上传</span>
+        </div>
       </div>
       <script type="text/javascript">
         function selectFile() {
@@ -109,16 +164,17 @@
           fileSelector.click();
         }
         var workbook;
-        var filePreview = document.getElementById("");
+        var uploadBox = document.getElementById("uploadBox");
+        var filePreview = document.getElementById("filePreview");
         function imFile(obj) {
-          if(!obj.files) {
+          if (!obj.files) {
             return
           }
           var f = obj.files[0];
           //console.log(f);
           var reader = new FileReader();
           reader.readAsBinaryString(f);
-          reader.onload = function(e) {
+          reader.onload = function (e) {
             e = e || window.event;
             var data = e.target.result;
             workbook = XLSX.read(data, {
@@ -126,8 +182,25 @@
             });
             var a = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
             console.log(a);
+            //scaleAnimation(uploadBox,"scaleAnimation","0.4s","forwards");
+            //scaleAnimation(filePreview,"scaleAnimation","0.4s","forwards");
+            animation(uploadBox,"scaleAnimation","0.4s","forwards");
           }
-        } 
+        }
+        function scaleAnimation(obj,keyFrames,time,mode) {
+          obj.style.animation = keyFrames + " " + time;
+          obj.style.animationFillMode = mode;
+        }
+        function animation(obj,keyFrames,time,mode) {
+          obj.style.animation = keyFrames + " " + time;
+          obj.style.webkitAnimation = keyFrames + " " + time;
+          obj.style.mozAnimation = keyFrames + " " + time;
+          obj.style.oAnimation = keyFrames + " " + time;
+          obj.style.animationFillMode = mode;
+          obj.style.webkitAnimationFillMode = mode;
+          console.log(obj.style);
+          http://ju.outofmemory.cn/entry/23096
+        }
       </script>
     </div>
   </div>
