@@ -1,21 +1,136 @@
 <!DOCTYPE html>
 <html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>GIAS DEMO</title>
-    <script type="text/javascript" src=""></script>
-    <style type="text/css">
-        * {
-            margin: 0px;
-            padding: 0px;
-        }
 
-        
-    </style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>GIAS DEMO</title>
+  <script type="text/javascript" src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+  <style type="text/css">
+    * {
+      margin: 0px;
+      padding: 0px;
+      font-family: "微软雅黑";
+    }
+
+    body {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .mainContainer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+      background-color: #000000;
+      opacity: 0.8;
+    }
+
+    .mainContainer .uploadBox {
+      position: relative;
+      width: 600px;
+      height: 400px;
+      margin-top: 200px;
+      background-color: #fafafa;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .uploadBox::before {
+      content: "";
+      display: table;
+    }
+
+    .uploadBox div:first-child {
+      position: relative;
+      margin-top: 40px;
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 2em;
+    }
+
+    .uploadBox .filePreview {
+      position: relative;
+      width: auto;
+      height: 220px;
+      box-sizing: border-box;
+      margin: 10px;
+      border: 1px solid #2c2c2c;
+    }
+
+    .uploadBox .inputFile {
+      position: absolute;
+      width: 400px;
+      height: 50px;
+      left: 50%;
+      margin-left: -200px;
+    }
+    .inputFile .uploadButton {
+      position: absolute;
+      width: 100px;
+      height: 30px;
+      top: 50%;
+      left: 50%;
+      margin-top: -15px;
+      margin-left: -50px;
+      background-color: #bf0f0f;
+      border-radius: 30px;
+      line-height: 30px;
+      vertical-align: middle;
+      text-align: center;
+      color: #ffffff;
+      cursor: pointer;
+    }
+    .uploadButton:hover {
+      background-color: #920000;
+    }
+  </style>
 </head>
+
 <body>
-    
+  <div class="mainContainer">
+    <div class="uploadBox">
+      <div>点击按钮上传Excel文件</div>
+      <div id="filePreview" class="filePreview"></div>
+      <div class="inputFile">
+        <input id="fileSelector" type="file" style="position:absolute;opacity:0;" onchange="imFile(this)" />
+        <div class="uploadButton" onclick="selectFile()"><span>上传</span></div>
+      </div>
+      <script type="text/javascript">
+        function selectFile() {
+          var fileSelector = document.getElementById("fileSelector");
+          fileSelector.click();
+        }
+        var workbook;
+        var filePreview = document.getElementById("");
+        function imFile(obj) {
+          if(!obj.files) {
+            return
+          }
+          var f = obj.files[0];
+          //console.log(f);
+          var reader = new FileReader();
+          reader.readAsBinaryString(f);
+          reader.onload = function(e) {
+            e = e || window.event;
+            var data = e.target.result;
+            workbook = XLSX.read(data, {
+              type: "binary"
+            });
+            var a = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
+            console.log(a);
+          }
+        } 
+      </script>
+    </div>
+  </div>
 </body>
+
 </html>
