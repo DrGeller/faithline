@@ -41,6 +41,57 @@
       border:2px solid #bf0f0f;
     }
 
+    @keyframes scaleAnimation {
+      from {
+        width: 600px;
+        height: 400px;
+      }
+      to {
+        width: 80%;
+        height: 85%;
+        margin-top: 50px;
+      }
+    }
+
+    /* Firefox */
+    @-moz-keyframes scaleAnimation {
+      from {
+        width: 600px;
+        height: 400px;
+      }
+      to {
+        width: 80%;
+        height: 85%;
+        margin-top: 50px;
+      }
+    }
+
+    /* Safari 和 Chrome */
+    @-webkit-keyframes scaleAnimation {
+      from {
+        width: 600px;
+        height: 400px;
+      }
+      to {
+        width: 80%;
+        height: 85%;
+        margin-top: 50px;
+      }
+    }
+
+    /* Opera */
+    @-o-keyframes scaleAnimation {
+      from {
+        width: 600px;
+        height: 400px;
+      }
+      to {
+        width: 80%;
+        height: 85%;
+        margin-top: 50px;
+      }
+    }
+
     .uploadBox::before {
       content: "";
       display: table;
