@@ -7,12 +7,13 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>GIAS DEMO</title>
   <script type="text/javascript" src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
-  <link rel="stylesheet" href="./css/animation.css" />
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <style type="text/css">
     * {
       margin: 0px;
       padding: 0px;
       font-family: "微软雅黑";
+      box-sizing: border-box;
     }
 
     body {
@@ -28,17 +29,19 @@
       left: 0px;
       top: 0px;
       background-color: #ececec;
+      z-index: 0;
     }
 
     .mainContainer .uploadBox {
-      position: relative;
+      position: absolute;
       width: 600px;
       height: 400px;
-      margin-top: 200px;
+      left: 50%;
+      top: 200px;
       background-color: #fafafa;
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: -300px;
       border: 2px solid #bf0f0f;
+      z-index: 2;
     }
 
     .uploadBox::before {
@@ -95,62 +98,112 @@
       top: 30px;
       margin-left: -800px;
       box-sizing: border-box;
-      display: none;
       background-color: #fafafa;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .filePreview .actionBar {
+      position: absolute;
+      width: 100%;
+      height: 98px;
+      top: 0px;
+      border-bottom: 1px solid #bf0f0f;
+    }
+
+    .filePreview .actionBar .nextButton {
+      position: absolute;
+      width: 100px;
+      height: 30px;
+      right: 60px;
+      top: 50%;
+      margin-top: -15px;
+      background-color: #bf0f0f;
+      border-radius: 30px;
+      line-height: 30px;
+      vertical-align: middle;
+      text-align: center;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .filePreview .actionBar .nextButton:hover {
+      background-color: #920000;
     }
 
     .filePreview .tableContainer {
       position: absolute;
       width: 1580px;
-      height: 450px;
-      margin: 0 10px 0 10px;
+      height: 802px;
+      left: 10px;
       bottom: 0px;
+      border-left: 1px solid #cecece;
+      border-right: 1px solid #cecece;
     }
 
     .tableContainer table {
       position: absolute;
       width: 100%;
       height: 100%;
-      box-sizing: border-box;
       border-collapse: collapse;
+      line-height: 100%;
+      vertical-align: middle;
     }
 
     table thead {
-      height: 60px;
+      width: 100%;
+      height: 100px;
+      top: 0px;
+      left: 0px;
+      border-bottom: 1px solid #cecece;
     }
 
     table thead tr th {
       width: 20%;
-      height: 60px;
+      height: 99px;
+      text-align: left;
+      padding-left: 4%;
+      font-size: 24px;
+      font-style: bold;
     }
 
-    table thead tr th:last-child {
+    table thead tr th:last-child,
+    table tbody tr td:last-child {
       width: 40%;
     }
 
     table tbody {
       position: absolute;
-      height: 390px;
+      width: 100%;
+      height: 700px;
+      left: 0px;
+      top: 100px;
       overflow: auto;
     }
 
-    table tbody tr {
-      height: 30px;
+    table tbody tr:nth-of-type(odd) {
+      background-color: #f8f8f8;
     }
 
-    table tr td {
+    table tbody tr:nth-of-type(even) {
+      background-color: #d6d6d6;
+    }
+
+    table tbody tr td {
       width: 20%;
-      height: 30px;
-      font-size: 12px;
-      text-align: center;
-      line-height: 100%;
-      vertical-align: middle;
-      border: 1px solid #181818;
-      box-sizing: border-box;
+      height: 35px;
+      font-size: 14px;
+      padding-left: 4%;
     }
 
-    table tr td:last-child {
-      width: 40%;
+    .mainContainer .mainView {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+      opacity: 0;
+      z-index: 1;
     }
   </style>
 
@@ -158,45 +211,45 @@
 
 <body>
   <div class="mainContainer">
-    <div id="uploadBox" class="uploadBox">
-      <div class="logo">点击上传EXCEL文件</div>
-      <div class="inputFile">
-        <input id="fileSelector" type="file" style="position:absolute;opacity:0;" onchange="imFile(this)" />
-        <div class="uploadButton" onclick="selectFile()">
-          <span>上传</span>
-        </div>
-      </div>
-    </div>
+    <div id="mainView" class="mainView"></div>
     <div id="filePreview" class="filePreview">
+      <div class="actionBar">
+        <a href="" download="data.xlsx" id="hf"></a>
+        <div id="nextButton" class="nextButton">下一步</div>
+      </div>
       <div class="tableContainer">
         <table id="fileTable" class="fileTable"></table>
       </div>
     </div>
+    <div id="uploadBox" class="uploadBox">
+      <div class="logo">点击选择EXCEL文件</div>
+      <div class="inputFile">
+        <input id="fileSelector" type="file" style="position:absolute;opacity:0;" onchange="imFile(this)" />
+        <div class="uploadButton" onclick="selectFile()">
+          <span>选择</span>
+        </div>
+      </div>
+    </div>
     <script type="text/javascript">
-      function animation(obj, keyFrames, time, mode) {
-        obj.style.animation = keyFrames + " " + time;
-        obj.style.webkitAnimation = keyFrames + " " + time;
-        obj.style.mozAnimation = keyFrames + " " + time;
-        obj.style.oAnimation = keyFrames + " " + time;
-        obj.style.animationFillMode = mode;
-        obj.style.webkitAnimationFillMode = mode;
-      }
+      var workbook;
+      var uploadBox = document.getElementById("uploadBox");
+      var filePreview = document.getElementById("filePreview");
+      var mianView = document.getElementById("mainView");
+      var fileTable = document.getElementById("fileTable");
+      var nextButton = document.getElementById("nextButton");
 
+      //文件选取
       function selectFile() {
         var fileSelector = document.getElementById("fileSelector");
         fileSelector.click();
       }
-      var workbook;
-      var uploadBox = document.getElementById("uploadBox");
-      var filePreview = document.getElementById("filePreview");
-      var fileTable = document.getElementById("fileTable");
 
+      //文件导入
       function imFile(obj) {
         if (!obj.files) {
           return
         }
         var f = obj.files[0];
-        //console.log(f);
         var reader = new FileReader();
         reader.readAsBinaryString(f);
         reader.onload = function (e) {
@@ -205,9 +258,9 @@
           workbook = XLSX.read(data, {
             type: "binary"
           });
-          var a = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
-          console.log(a.length);
-          animation(uploadBox, "fadeOut", "0.4s", "forwards");
+          workData = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
+          uploadBox.style.opacity = 0;
+          filePreview.style.opacity = 1;
           thead = document.createElement("thead");
           tr = document.createElement("tr");
           th = document.createElement("th");
@@ -226,23 +279,127 @@
           fileTable.appendChild(thead);
           tbody = document.createElement("tbody");
           fileTable.appendChild(tbody);
-          for (var i = 0; i <= 999; i++) {
+          for (var i = 0; i < 1000; i++) {
             tr = document.createElement("tr");
             td = document.createElement("td");
-            td.appendChild(document.createTextNode(a[i].用户名称));
+            td.appendChild(document.createTextNode(workData[i].用户名称));
             tr.appendChild(td);
             td = document.createElement("td");
-            td.appendChild(document.createTextNode(a[i].用户编码));
+            td.appendChild(document.createTextNode(workData[i].用户编码));
             tr.appendChild(td);
             td = document.createElement("td");
-            td.appendChild(document.createTextNode(a[i].用电类别));
+            td.appendChild(document.createTextNode(workData[i].用电类别));
             tr.appendChild(td);
             td = document.createElement("td");
-            td.appendChild(document.createTextNode(a[i].用电地址));
+            td.appendChild(document.createTextNode(workData[i].用电地址));
             tr.appendChild(td);
             tbody.appendChild(tr);
           }
-          filePreview.style.display = "block";
+          stage03();
+        }
+      }
+
+      //文件导出
+      var tmpDown; //导出的二进制对象
+      function downloadExcel(json, type) {
+        var tmpData = json[0];
+        json.unshift({});
+        var keyMap = []; //获取表头
+        console.log(json[0]);
+        for (var k in tmpData ) {
+          keyMap.push(k);
+          json[0][k] = k;
+        }
+        console.log(keyMap);
+        var tmpData = [];//用来保存转换好的json 
+        json.map(
+          (v, i) => keyMap.map(
+            (k, j) => Object.assign({}, {
+              v: v[k],
+              position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
+        }))).reduce(
+          (prev, next) => prev.concat(next)
+        ).forEach((v, i) => tmpData[v.position] = {v: v.v});
+        var outputPos = Object.keys(tmpData); //设置区域,比如表格从A1到D10
+        var tmpWB = {
+          SheetNames: ['mySheet'], //保存的表标题
+          Sheets: {
+            'mySheet': Object.assign({},
+              tmpData, //内容
+              {
+                '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1] //设置填充区域
+              })
+          }
+        }
+        tmpDown = new Blob([s2ab(XLSX.write(tmpWB, {
+          bookType: (type == undefined ? 'xlsx' : type),
+          bookSST: false,
+          type: 'binary'  //这里的数据是用来定义导出的格式类型
+        }))], {
+            type: ""
+        }); //创建二进制对象写入转换好的字节流
+        var href = URL.createObjectURL(tmpDown); //创建对象超链接
+        document.getElementById("hf").href = href; //绑定a标签
+        document.getElementById("hf").click(); //模拟点击实现下载
+        setTimeout(function () { //延时释放
+          URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个object URL
+        }, 100);
+      }
+      function s2ab(s) { //字符串转字符流
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+      }
+      // 将指定的自然数转换为26进制表示。映射关系：[0-25] -> [A-Z]。
+      function getCharCol(n) {
+        let temCol = '',
+          s = '',
+          m = 0
+        while (n > 0) {
+          m = n % 26 + 1
+          s = String.fromCharCode(m + 64) + s
+          n = (n - m) / 26
+        }
+        return s
+      }
+
+      //获取地理信息
+      var int;
+      var j = 0;
+      function getGeoInfo() {
+        var c = 1;
+        for (var i = j; i < workData.length; i++) {
+          var url = "http://api.map.baidu.com/geocoder/v2/?address="+obj[i].用电地址+"&output=json&ak=G48E8XsFf8yk48GQZ4K6gGdDqM9CQT4n&callback=showLocation";
+          $.ajax({
+            url: url,
+            type: "GET",
+            dataType: 'JSONP',
+            success: function(data){
+              console.log(data.result.location);
+              workData[i]
+            }
+          });
+          console.log(c);
+          if (i == workData.length - 1) {
+            window.clearInterval(int);
+            console.log("ok");
+          } else if (c == 2900) {
+            j = i + 1;
+            console.log("pause");
+            return
+          }
+          c++;
+        }
+      }
+      function stage03() {
+        //getGeoInfo();
+        //int = setInterval("getGeoInfo()",60000);
+        nextButton.onclick = function () {
+          filePreview.style.opacity = 0;
+          mainView.style.opacity = 1;
+
+          //downloadExcel(workData);
         }
       }
     </script>
