@@ -2,7 +2,8 @@
 
 //文件导入
 var workbook;
-function imFile(obj) {
+
+function imFile(obj, fun) {
   if (!obj.files) {
     return
   }
@@ -16,7 +17,7 @@ function imFile(obj) {
       type: "binary"
     });
     workData = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
-    stage02();
+    fun();
   }
 }
 
@@ -30,7 +31,7 @@ function downloadExcel(json, type) {
     keyMap.push(k);
     json[0][k] = k;
   }
-  var tmpData = [];//用来保存转换好的json 
+  var tmpData = []; //用来保存转换好的json 
   json.map(
     (v, i) => keyMap.map(
       (k, j) => Object.assign({}, {
@@ -38,7 +39,9 @@ function downloadExcel(json, type) {
         position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
       }))).reduce(
     (prev, next) => prev.concat(next)
-    ).forEach((v, i) => tmpData[v.position] = { v: v.v });
+  ).forEach((v, i) => tmpData[v.position] = {
+    v: v.v
+  });
   var outputPos = Object.keys(tmpData); //设置区域,比如表格从A1到D10
   var tmpWB = {
     SheetNames: ['mySheet'], //保存的表标题
@@ -53,10 +56,10 @@ function downloadExcel(json, type) {
   tmpDown = new Blob([s2ab(XLSX.write(tmpWB, {
     bookType: (type == undefined ? 'xlsx' : type),
     bookSST: false,
-    type: 'binary'  //这里的数据是用来定义导出的格式类型
+    type: 'binary' //这里的数据是用来定义导出的格式类型
   }))], {
-      type: ""
-    }); //创建二进制对象写入转换好的字节流
+    type: ""
+  }); //创建二进制对象写入转换好的字节流
   var href = URL.createObjectURL(tmpDown); //创建对象超链接
   document.getElementById("hf").href = href; //绑定a标签
   document.getElementById("hf").click(); //模拟点击实现下载
@@ -64,6 +67,7 @@ function downloadExcel(json, type) {
     URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个object URL
   }, 100);
 }
+
 function s2ab(s) { //字符串转字符流
   var buf = new ArrayBuffer(s.length);
   var view = new Uint8Array(buf);
@@ -72,7 +76,9 @@ function s2ab(s) { //字符串转字符流
 }
 // 将指定的自然数转换为26进制表示。映射关系：[0-25] -> [A-Z]。
 function getCharCol(n) {
-  let temCol = '', s = '', m = 0;
+  let temCol = '',
+    s = '',
+    m = 0;
   while (n > 0) {
     m = n % 26 + 1
     s = String.fromCharCode(m + 64) + s
@@ -123,6 +129,7 @@ function displayTable() {
 //获取地理信息
 var int, doneFlag;
 var currentIndex = 0;
+
 function getGeoInfo() {
   var c = 1;
   var i = currentIndex;
@@ -130,6 +137,7 @@ function getGeoInfo() {
     return;
   }
   doneFlag = 0;
+
   function ajaxRequest() {
     var urlStr = "http://api.map.baidu.com/geocoder/v2/?address=" + encodeURIComponent(workData[i].用电地址) + "&output=json&ak=hniwPVgo49ixnxQW4DOIUppE9PFLQgnz&callback=showLocation";
     $.ajax({
@@ -166,4 +174,49 @@ function getGeoInfo() {
     });
   }
   ajaxRequest();
+}
+
+function createView(data) {
+  option = {
+    title: {
+      text: "GIAS",
+      textStyle: {
+        fontSize: "24"
+      },
+      left: "center",
+      top: "20"
+    },
+    bmap: {
+      center: [109.033301, 32.697319],
+      zoom: 13,
+      roam: true,
+      mapStyle: {
+        style: "normal"
+      }
+    },
+    series: [{
+      name: "台区",
+      type: 'scatter',
+      coordinateSystem: 'bmap',
+      symbol: "circle",
+      symbolSize: 5,
+      itemStyle: {
+        normal:{
+          
+        }
+      },
+      data: data
+    }]
+  }
+  var mapChart = echarts.init(document.getElementById('mapContainer'));
+  mapChart.setOption(option);
+  var bmap = mapChart.getModel().getComponent('bmap').getBMap();
+  bmap.addControl(new BMap.MapTypeControl({
+    mapTypes: [
+      BMAP_NORMAL_MAP,
+      BMAP_HYBRID_MAP
+    ]
+  }));
+  bmap.addControl(new BMap.NavigationControl());
+  bmap.addControl(new BMap.ScaleControl());
 }

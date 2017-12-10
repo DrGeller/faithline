@@ -46,6 +46,7 @@
       margin-left: -300px;
       border: 2px solid #bf0f0f;
       z-index: 2;
+      display: block;
     }
 
     .uploadBox::before {
@@ -53,17 +54,26 @@
       display: table;
     }
 
-    .uploadBox .logo {
+    .uploadBox .tip {
       position: relative;
       width: 100%;
       height: 100px;
-      margin-top: 80px;
+      margin-top: 60px;
+    }
+
+    .uploadBox .tip div {
+      height: 100px;
+      text-align: center;
       line-height: 100px;
       vertical-align: middle;
-      text-align: center;
       font-size: 24px;
-      color: #181818;
+      color: #292929;
     }
+
+    .uploadBox .tip div span {
+      font-weight: bold;
+    }
+
 
     .uploadBox .inputFile {
       position: relative;
@@ -208,29 +218,33 @@
       top: 0px;
       display: none;
       z-index: 1;
+      border-top: 4px solid #bf0f0f;
     }
 
-    .mainView .topLayout {
+    .mainView .leftLayout {
+      position: absolute;
+      width: 45%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+    }
+
+    .leftLayout .chartContainer {
       width: 100%;
-      height: 50%;
     }
 
-    .topLayout .mapContainer {
+    .mainView .rightLayout {
+      position: absolute;
+      width: 55%;
+      height: 100%;
+      right: 0px;
+    }
+
+    .rightLayout .mapContainer {
       width: 100%;
       height: 100%;
       background-color: #ececec;
-      border-bottom: 4px solid #bf0f0f;
-    }
-
-    .mainView .bottomView {
-      width: 100%;
-      height: 50%;
-    }
-
-    .bottomView .chartContainer {
-      display: inline-block;
-      width: 30%;
-      height: 50%;
+      border-left: 4px solid #cccccc;
     }
   </style>
 
@@ -239,13 +253,13 @@
 <body onload="stage01()">
   <div class="mainContainer">
     <div id="mainView" class="mainView">
-      <div class="topLayout">
-        <div id="mapContainer" class="mapContainer"></div>
+      <div class="leftLayout">
+        <div id="" class="chartContainer"></div>
+        <div id="" class="chartContainer"></div>
+        <div id="" class="chartContainer"></div>
       </div>
-      <div class="bottomLayout">
-        <div id="" class="chartContainer"></div>
-        <div id="" class="chartContainer"></div>
-        <div id="" class="chartContainer"></div>
+      <div class="rightLayout">
+        <div id="mapContainer" class="mapContainer"></div>
       </div>
     </div>
     <div id="filePreview" class="filePreview">
@@ -258,18 +272,28 @@
       </div>
     </div>
     <div id="uploadBox" class="uploadBox">
-      <div class="logo">点击选择EXCEL文件</div>
+      <div class="tip">
+        <div>点击 <span>获取</span> 或 <span>选择</span> 经纬度数据</div>
+      </div>
+      <div class="inputFile">
+        <input id="fileUploader" type="file" style="position:absolute;opacity:0" />
+        <div id="uploadButton" class="uploadButton">
+          <span>获取</span>
+        </div>
+      </div>
       <div class="inputFile">
         <input id="fileSelector" type="file" style="position:absolute;opacity:0" />
-        <div id="uploadButton" class="uploadButton">
+        <div id="selectButton" class="uploadButton">
           <span>选择</span>
         </div>
       </div>
     </div>
     <script type="text/javascript">
       var uploadBox = document.getElementById("uploadBox");
-      var fileSelector = document.getElementById("fileSelector");
+      var fileUploader = document.getElementById("fileUploader");
+      var fileSelecter = document.getElementById("fileSelecter");
       var uploadButton = document.getElementById("uploadButton");
+      var selectButton = document.getElementById("selectButton");
       var filePreview = document.getElementById("filePreview");
       var mianView = document.getElementById("mainView");
       var fileTable = document.getElementById("fileTable");
@@ -277,10 +301,30 @@
 
       function stage01() {
         uploadButton.onclick = function () {
+          fileUploader.click();
+        }
+        fileUploader.onchange = function () {
+          imFile(this, function() {
+            stage02();
+          });
+        }
+        selectButton.onclick = function () {
           fileSelector.click();
         }
         fileSelector.onchange = function () {
-          imFile(this);
+          imFile(this, function() {
+            var tempData = [];
+            for (var i =0;i<workData.length;i++){
+              tempData[i] = {
+                name: workData[i].用户名称,
+                value: [workData[i].经度值, workData[i].纬度值]
+              }
+            }
+            console.log(tempData);
+            uploadBox.style.display = "none";
+            mainView.style.display = "block";
+            createView(tempData);
+          });
         }
       }
 
@@ -288,168 +332,20 @@
         uploadBox.style.display = "none";
         filePreview.style.display = "block";
         displayTable();
+        nextButton.onclick = function () {
+          //filePreview.style.display = "none";
+          //mainView.style.display = "block";
+          //getGeoInfo();
+          //int = setInterval("getGeoInfo()",60000);
+          stage03();
+        }
       }
 
       function stage03() {
-        nextButton.onclick = function () {
-          filePreview.style.display = "none";
-          mainView.style.display = "block";
-          //getGeoInfo();
-          //int = setInterval("getGeoInfo()",60000);
-          var mapChart = echarts.init(document.getElementById('mapContainer'));
-          mapChart.setOption({
-            bmap: {
-              center: [109.611067, 32.7782],
-              zoom: 11,
-              roam: true,
-              mapStyle: {
-                styleJson: [{
-                  'featureType': 'land',     //调整土地颜色
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'color': '#081734'
-                  }
-                }, {
-                  'featureType': 'building',   //调整建筑物颜色
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'color': '#04406F'
-                  }
-                }, {
-                  'featureType': 'building',   //调整建筑物标签是否可视
-                  'elementType': 'labels',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'highway',     //调整高速道路颜色
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'color': '#015B99'
-                  }
-                }, {
-                  'featureType': 'highway',    //调整高速名字是否可视
-                  'elementType': 'labels',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'arterial',   //调整一些干道颜色
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'color': '#003051'
-                  }
-                }, {
-                  'featureType': 'arterial',
-                  'elementType': 'labels',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'green',
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'water',
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'color': '#044161'
-                  }
-                }, {
-                  'featureType': 'subway',    //调整地铁颜色
-                  'elementType': 'geometry.stroke',
-                  'stylers': {
-                    'color': '#003051'
-                  }
-                }, {
-                  'featureType': 'subway',
-                  'elementType': 'labels',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'railway',
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'railway',
-                  'elementType': 'labels',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'all',     //调整所有的标签的边缘颜色
-                  'elementType': 'labels.text.stroke',
-                  'stylers': {
-                    'color': '#313131'
-                  }
-                }, {
-                  'featureType': 'all',     //调整所有标签的填充颜色
-                  'elementType': 'labels.text.fill',
-                  'stylers': {
-                    'color': '#FFFFFF'
-                  }
-                }, {
-                  'featureType': 'manmade',
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'manmade',
-                  'elementType': 'labels',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'local',
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'local',
-                  'elementType': 'labels',
-                  'stylers': {
-                    'visibility': 'off'
-                  }
-                }, {
-                  'featureType': 'subway',
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'lightness': -65
-                  }
-                }, {
-                  'featureType': 'railway',
-                  'elementType': 'all',
-                  'stylers': {
-                    'lightness': -40
-                  }
-                }, {
-                  'featureType': 'boundary',
-                  'elementType': 'geometry',
-                  'stylers': {
-                    'color': '#8b8787',
-                    'weight': '1',
-                    'lightness': -29
-                  }
-                }]
-              }
-            },
-            series: [{
-              type: 'scatter',
-              coordinateSystem: 'bmap',
-              data: [[120, 30, 1]]
-            }]
-          })
-          var bmap = mapChart.getModel().getComponent('bmap').getBMap();
-          bmap.addControl(new BMap.MapTypeControl());
-        }
+        
+        nextButton.click();
       }
+      stage03();
     </script>
   </div>
 </body>
