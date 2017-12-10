@@ -305,12 +305,10 @@
         var tmpData = json[0];
         json.unshift({});
         var keyMap = []; //获取表头
-        console.log(json[0]);
         for (var k in tmpData ) {
           keyMap.push(k);
           json[0][k] = k;
         }
-        console.log(keyMap);
         var tmpData = [];//用来保存转换好的json 
         json.map(
           (v, i) => keyMap.map(
@@ -353,53 +351,68 @@
       }
       // 将指定的自然数转换为26进制表示。映射关系：[0-25] -> [A-Z]。
       function getCharCol(n) {
-        let temCol = '',
-          s = '',
-          m = 0
+        let temCol = '', s = '', m = 0;
         while (n > 0) {
           m = n % 26 + 1
           s = String.fromCharCode(m + 64) + s
           n = (n - m) / 26
         }
-        return s
+        return s;
       }
 
       //获取地理信息
-      var int;
-      var j = 0;
+      var int, doneFlag;
+      var currentIndex = 0;
       function getGeoInfo() {
         var c = 1;
-        for (var i = j; i < workData.length; i++) {
-          var url = "http://api.map.baidu.com/geocoder/v2/?address="+obj[i].用电地址+"&output=json&ak=G48E8XsFf8yk48GQZ4K6gGdDqM9CQT4n&callback=showLocation";
+        var i = currentIndex;
+        if (doneFlag==0) {
+          return;
+        }
+        doneFlag = 0;
+        function ajaxRequest() {
+          var urlStr = "http://api.map.baidu.com/geocoder/v2/?address=" + encodeURIComponent(workData[i].用电地址) + "&output=json&ak=G48E8XsFf8yk48GQZ4K6gGdDqM9CQT4n&callback=showLocation";
           $.ajax({
-            url: url,
+            url: urlStr,
             type: "GET",
-            dataType: 'JSONP',
-            success: function(data){
-              console.log(data.result.location);
-              workData[i]
+            dataType: "JSONP",
+            success: function(returnData) {
+              if(returnData.status==0) {
+                workData[i].状态值 = returnData.status;
+                workData[i].经度值 = returnData.result.location.lng;
+                workData[i].纬度值 = returnData.result.location.lat;
+                workData[i].模式 = returnData.result.precise;
+                workData[i].可信度 = returnData.result.confidence;
+                workData[i].详细级别 = returnData.result.level;
+              }
+              console.log(i+1);
+              console.log(workData[i]);
+              i++;
+              if (i == workData.length) {
+                window.clearInterval(int);
+                console.log("OK");
+                downloadExcel(workData);
+                return;
+              }
+              if (c == 2900) {
+                currentIndex = i;
+                doneFlag = 1;
+                console.log("pause");
+                return;
+              } 
+              c++;
+              ajaxRequest();
             }
           });
-          console.log(c);
-          if (i == workData.length - 1) {
-            window.clearInterval(int);
-            console.log("ok");
-          } else if (c == 2900) {
-            j = i + 1;
-            console.log("pause");
-            return
-          }
-          c++;
         }
+        ajaxRequest();
       }
       function stage03() {
-        //getGeoInfo();
-        //int = setInterval("getGeoInfo()",60000);
         nextButton.onclick = function () {
           filePreview.style.opacity = 0;
           mainView.style.opacity = 1;
-
-          //downloadExcel(workData);
+          getGeoInfo();
+          int = setInterval("getGeoInfo()",5000);
         }
       }
     </script>
