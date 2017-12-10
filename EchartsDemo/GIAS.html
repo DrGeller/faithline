@@ -371,7 +371,7 @@
         }
         doneFlag = 0;
         function ajaxRequest() {
-          var urlStr = "http://api.map.baidu.com/geocoder/v2/?address=" + encodeURIComponent(workData[i].用电地址) + "&output=json&ak=G48E8XsFf8yk48GQZ4K6gGdDqM9CQT4n&callback=showLocation";
+          var urlStr = "http://api.map.baidu.com/geocoder/v2/?address=" + encodeURIComponent(workData[i].用电地址) + "&output=json&ak=hniwPVgo49ixnxQW4DOIUppE9PFLQgnz&callback=showLocation";
           $.ajax({
             url: urlStr,
             type: "GET",
@@ -411,8 +411,9 @@
         nextButton.onclick = function () {
           filePreview.style.opacity = 0;
           mainView.style.opacity = 1;
-          getGeoInfo();
-          int = setInterval("getGeoInfo()",5000);
+          //getGeoInfo();
+          //int = setInterval("getGeoInfo()",60000);
+          
         }
       }
     </script>
