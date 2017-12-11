@@ -223,19 +223,22 @@
 
     .mainView .leftLayout {
       position: absolute;
-      width: 45%;
+      width: 40%;
       height: 100%;
       left: 0px;
       top: 0px;
+      overflow: hidden;
     }
 
     .leftLayout .chartContainer {
       width: 100%;
+      background-color: #ececec;
+      border-bottom: 1px solid #cccccc;
     }
 
     .mainView .rightLayout {
       position: absolute;
-      width: 55%;
+      width: 60%;
       height: 100%;
       right: 0px;
     }
@@ -254,6 +257,9 @@
   <div class="mainContainer">
     <div id="mainView" class="mainView">
       <div class="leftLayout">
+        <div id="calendarHeatMap" class="chartContainer"></div>
+        <div id="" class="chartContainer"></div>
+        <div id="" class="chartContainer"></div>
         <div id="" class="chartContainer"></div>
         <div id="" class="chartContainer"></div>
         <div id="" class="chartContainer"></div>
@@ -273,7 +279,9 @@
     </div>
     <div id="uploadBox" class="uploadBox">
       <div class="tip">
-        <div>点击 <span>获取</span> 或 <span>选择</span> 经纬度数据</div>
+        <div>点击
+          <span>获取</span> 或
+          <span>选择</span> 经纬度数据</div>
       </div>
       <div class="inputFile">
         <input id="fileUploader" type="file" style="position:absolute;opacity:0" />
@@ -298,13 +306,16 @@
       var mianView = document.getElementById("mainView");
       var fileTable = document.getElementById("fileTable");
       var nextButton = document.getElementById("nextButton");
+      var $leftLayout = $(".leftLayout");
+      var $chartContainer = $(".chartContainer");
+      var $calendarHeatMap = $("#calendarHeatMap");
 
       function stage01() {
         uploadButton.onclick = function () {
           fileUploader.click();
         }
         fileUploader.onchange = function () {
-          imFile(this, function() {
+          imFile(this, function () {
             stage02();
           });
         }
@@ -312,9 +323,9 @@
           fileSelector.click();
         }
         fileSelector.onchange = function () {
-          imFile(this, function() {
+          imFile(this, function () {
             var tempData = [];
-            for (var i =0;i<workData.length;i++){
+            for (var i = 0; i < workData.length; i++) {
               tempData[i] = {
                 name: workData[i].用户名称,
                 value: [workData[i].经度值, workData[i].纬度值]
@@ -324,6 +335,9 @@
             uploadBox.style.display = "none";
             mainView.style.display = "block";
             createView(tempData);
+            $chartContainer.css({
+              "height": $leftLayout.height() / 3 + "px"
+            });
           });
         }
       }
@@ -342,7 +356,6 @@
       }
 
       function stage03() {
-        
         nextButton.click();
       }
       stage03();

@@ -2,7 +2,6 @@
 
 //文件导入
 var workbook;
-
 function imFile(obj, fun) {
   if (!obj.files) {
     return
