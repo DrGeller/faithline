@@ -15,7 +15,11 @@ function imFile(obj, fun) {
     workbook = XLSX.read(data, {
       type: "binary"
     });
-    workData = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
+    workData01 = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
+    workData02 = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[1]])));
+    workData03 = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[2]])));
+    console.log(workData02);
+    console.log(workData03);
     fun();
   }
 }
@@ -38,9 +42,9 @@ function downloadExcel(json, type) {
         position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
       }))).reduce(
     (prev, next) => prev.concat(next)
-  ).forEach((v, i) => tmpData[v.position] = {
-    v: v.v
-  });
+    ).forEach((v, i) => tmpData[v.position] = {
+      v: v.v
+    });
   var outputPos = Object.keys(tmpData); //设置区域,比如表格从A1到D10
   var tmpWB = {
     SheetNames: ['mySheet'], //保存的表标题
@@ -57,8 +61,8 @@ function downloadExcel(json, type) {
     bookSST: false,
     type: 'binary' //这里的数据是用来定义导出的格式类型
   }))], {
-    type: ""
-  }); //创建二进制对象写入转换好的字节流
+      type: ""
+    }); //创建二进制对象写入转换好的字节流
   var href = URL.createObjectURL(tmpDown); //创建对象超链接
   document.getElementById("hf").href = href; //绑定a标签
   document.getElementById("hf").click(); //模拟点击实现下载
@@ -109,16 +113,16 @@ function displayTable() {
   for (var i = 0; i < 1000; i++) {
     tr = document.createElement("tr");
     td = document.createElement("td");
-    td.appendChild(document.createTextNode(workData[i].用户名称));
+    td.appendChild(document.createTextNode(workData01[i].用户名称));
     tr.appendChild(td);
     td = document.createElement("td");
-    td.appendChild(document.createTextNode(workData[i].用户编码));
+    td.appendChild(document.createTextNode(workData01[i].用户编码));
     tr.appendChild(td);
     td = document.createElement("td");
-    td.appendChild(document.createTextNode(workData[i].用电类别));
+    td.appendChild(document.createTextNode(workData01[i].用电类别));
     tr.appendChild(td);
     td = document.createElement("td");
-    td.appendChild(document.createTextNode(workData[i].用电地址));
+    td.appendChild(document.createTextNode(workData01[i].用电地址));
     tr.appendChild(td);
     tbody.appendChild(tr);
   }
@@ -136,29 +140,28 @@ function getGeoInfo() {
     return;
   }
   doneFlag = 0;
-
   function ajaxRequest() {
-    var urlStr = "http://api.map.baidu.com/geocoder/v2/?address=" + encodeURIComponent(workData[i].用电地址) + "&output=json&ak=hniwPVgo49ixnxQW4DOIUppE9PFLQgnz&callback=showLocation";
+    var urlStr = "http://api.map.baidu.com/geocoder/v2/?address=" + encodeURIComponent(workData01[i].用电地址) + "&output=json&ak=hniwPVgo49ixnxQW4DOIUppE9PFLQgnz&callback=showLocation";
     $.ajax({
       url: urlStr,
       type: "GET",
       dataType: "JSONP",
       success: function (returnData) {
         if (returnData.status == 0) {
-          workData[i].状态值 = returnData.status;
-          workData[i].经度值 = returnData.result.location.lng;
-          workData[i].纬度值 = returnData.result.location.lat;
-          workData[i].模式 = returnData.result.precise;
-          workData[i].可信度 = returnData.result.confidence;
-          workData[i].详细级别 = returnData.result.level;
+          workData01[i].状态值 = returnData.status;
+          workData01[i].经度值 = returnData.result.location.lng;
+          workData01[i].纬度值 = returnData.result.location.lat;
+          workData01[i].模式 = returnData.result.precise;
+          workData01[i].可信度 = returnData.result.confidence;
+          workData01[i].详细级别 = returnData.result.level;
         }
         console.log(i + 1);
-        console.log(workData[i]);
+        console.log(workData01[i]);
         i++;
-        if (i == workData.length) {
+        if (i == workData01.length) {
           window.clearInterval(int);
           console.log("OK");
-          downloadExcel(workData);
+          downloadExcel(workData01);
           return;
         }
         if (c == 2900) {
@@ -175,8 +178,59 @@ function getGeoInfo() {
   ajaxRequest();
 }
 
-function createView(data) {
-  option = {
+function calendarHeatMap() {
+  var option = {
+    tooltip: {
+      position: 'top'
+    },
+    animation: false,
+    grid: {
+      height: '50%',
+      y: '10%'
+    },
+    visualMap: {
+      min: 0,
+      max: 10,
+      calculable: true,
+      orient: 'horizontal',
+      left: 'center',
+      bottom: '15%'
+    },
+    calendar: {
+      top: 120,
+      left: 30,
+      right: 30,
+      cellSize: ['auto', 13],
+      range: '2016',
+      itemStyle: {
+        normal: { borderWidth: 0.5 }
+      },
+      yearLabel: { show: false }
+    },
+    series: [{
+      name: 'Punch Card',
+      type: 'heatmap',
+      coordinateSystem: "calendar",
+      label: {
+        normal: {
+          show: true
+        }
+      },
+      itemStyle: {
+        emphasis: {
+          shadowBlur: 10,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
+    }]
+  }
+  var calendarHeatMap = echarts.init(document.getElementById('calendarHeatMap'));
+  calendarHeatMap.setOption(option);
+  return calendarHeatMap;
+}
+
+function createGeoMap() {
+  var option = {
     title: {
       text: "GIAS",
       textStyle: {
@@ -193,6 +247,10 @@ function createView(data) {
         style: "normal"
       }
     },
+    tooltip: {
+      trigger: 'item',
+      position: "right"
+    },
     series: [{
       name: "台区",
       type: 'scatter',
@@ -200,11 +258,11 @@ function createView(data) {
       symbol: "circle",
       symbolSize: 5,
       itemStyle: {
-        normal:{
-          
+        normal: {
+
         }
       },
-      data: data
+      dimensions: ['经度', '纬度']
     }]
   }
   var mapChart = echarts.init(document.getElementById('mapContainer'));
@@ -218,4 +276,5 @@ function createView(data) {
   }));
   bmap.addControl(new BMap.NavigationControl());
   bmap.addControl(new BMap.ScaleControl());
+  return mapChart;
 }
