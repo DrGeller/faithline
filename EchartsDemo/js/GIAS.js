@@ -2,6 +2,7 @@
 
 //文件导入
 var workbook;
+
 function imFile(obj, fun) {
   if (!obj.files) {
     return
@@ -42,9 +43,9 @@ function downloadExcel(json, type) {
         position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
       }))).reduce(
     (prev, next) => prev.concat(next)
-    ).forEach((v, i) => tmpData[v.position] = {
-      v: v.v
-    });
+  ).forEach((v, i) => tmpData[v.position] = {
+    v: v.v
+  });
   var outputPos = Object.keys(tmpData); //设置区域,比如表格从A1到D10
   var tmpWB = {
     SheetNames: ['mySheet'], //保存的表标题
@@ -61,8 +62,8 @@ function downloadExcel(json, type) {
     bookSST: false,
     type: 'binary' //这里的数据是用来定义导出的格式类型
   }))], {
-      type: ""
-    }); //创建二进制对象写入转换好的字节流
+    type: ""
+  }); //创建二进制对象写入转换好的字节流
   var href = URL.createObjectURL(tmpDown); //创建对象超链接
   document.getElementById("hf").href = href; //绑定a标签
   document.getElementById("hf").click(); //模拟点击实现下载
@@ -140,6 +141,7 @@ function getGeoInfo() {
     return;
   }
   doneFlag = 0;
+
   function ajaxRequest() {
     var urlStr = "http://api.map.baidu.com/geocoder/v2/?address=" + encodeURIComponent(workData01[i].用电地址) + "&output=json&ak=hniwPVgo49ixnxQW4DOIUppE9PFLQgnz&callback=showLocation";
     $.ajax({
@@ -178,12 +180,11 @@ function getGeoInfo() {
   ajaxRequest();
 }
 
-function calendarHeatMap() {
+function createCalMap() {
   var option = {
     tooltip: {
       position: 'top'
     },
-    animation: false,
     grid: {
       height: '50%',
       y: '10%'
@@ -192,20 +193,33 @@ function calendarHeatMap() {
       min: 0,
       max: 10,
       calculable: true,
-      orient: 'horizontal',
-      left: 'center',
-      bottom: '15%'
+      orient: 'vertical',
+      top: 40,
+      right: 10
     },
     calendar: {
-      top: 120,
-      left: 30,
-      right: 30,
+      top: 40,
+      left: 60,
+      right: 80,
+      bottom: 40,
       cellSize: ['auto', 13],
-      range: '2016',
+      range: ['2017-01-01', '2017-03-31'],
       itemStyle: {
-        normal: { borderWidth: 0.5 }
+        normal: {
+          borderWidth: 0.5
+        }
       },
-      yearLabel: { show: false }
+      dayLabel: {
+        show: true,
+        firstDay: 1,
+        nameMap: "cn"
+      },
+      monthLabel: {
+        nameMap: "cn"
+      },
+      yearLabel: {
+        show: false
+      }
     },
     series: [{
       name: 'Punch Card',
@@ -224,9 +238,9 @@ function calendarHeatMap() {
       }
     }]
   }
-  var calendarHeatMap = echarts.init(document.getElementById('calendarHeatMap'));
-  calendarHeatMap.setOption(option);
-  return calendarHeatMap;
+  var calendarMap = echarts.init(document.getElementById('calendarMap'));
+  calendarMap.setOption(option);
+  return calendarMap;
 }
 
 function createGeoMap() {
@@ -246,10 +260,6 @@ function createGeoMap() {
       mapStyle: {
         style: "normal"
       }
-    },
-    tooltip: {
-      trigger: 'item',
-      position: "right"
     },
     series: [{
       name: "台区",
@@ -277,4 +287,105 @@ function createGeoMap() {
   bmap.addControl(new BMap.NavigationControl());
   bmap.addControl(new BMap.ScaleControl());
   return mapChart;
+}
+
+function createLineMap(obj) {
+  var option = {
+    title: {
+      
+    },
+    legdend: {
+      data: ['A相', 'B相', 'C相']
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
+    xAxis: {
+      type: "time"
+    },
+    yAxis: {
+      splitLine: {
+        show: false
+      },
+    },
+    toolbox: {
+      left: 'center',
+      feature: {
+        dataZoom: {
+          yAxisIndex: 'none'
+        },
+        restore: {},
+        saveAsImage: {}
+      }
+    },
+    dataZoom: [{
+      type:"slider",
+      xAxisIndex: [0],
+      start: 0,
+      end:10,
+      filterMode: 'filter'
+    }, {
+      type: "slider",
+      yAxisIndex: [0],
+      start: 80,
+      end: 100,
+      filterMode: 'filter',
+      right: 20
+    }],
+    /*visualMap: {
+      top: 10,
+      right: 10,
+      pieces: [{
+        gt: 0,
+        lte: 50,
+        color: '#096'
+      }, {
+        gt: 50,
+        lte: 100,
+        color: '#ffde33'
+      }, {
+        gt: 100,
+        lte: 150,
+        color: '#ff9933'
+      }, {
+        gt: 150,
+        lte: 200,
+        color: '#cc0033'
+      }, {
+        gt: 200,
+        lte: 300,
+        color: '#660099'
+      }, {
+        gt: 300,
+        color: '#7e0023'
+      }],
+      outOfRange: {
+        color: '#999'
+      }
+    }, */
+    series: [{
+      name: 'A相',
+      type: 'line',
+      showSymbol: false,
+      markLine: {
+        silent: true,
+        data: [{
+          yAxis: 216
+        }, {
+          yAxis: 224
+        }]
+      }
+    }, {
+      name: 'B相',
+      type: 'line',
+      showSymbol: false
+    }, {
+      name: 'C相',
+      type: 'line',
+      showSymbol: false
+    }]
+  }
+  var lineChart = echarts.init(obj);
+  lineChart.setOption(option);
+  return lineChart;
 }

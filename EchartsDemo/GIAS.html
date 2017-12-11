@@ -262,9 +262,9 @@
   <div class="mainContainer">
     <div id="mainView" class="mainView">
       <div class="leftLayout">
-        <div id="calendarHeatMap" class="chartContainer"></div>
-        <div id="" class="chartContainer"></div>
-        <div id="" class="chartContainer"></div>
+        <div id="calendarMap" class="chartContainer"></div>
+        <div id="lineMap01" class="chartContainer"></div>
+        <div id="lineMap02" class="chartContainer"></div>
         <div id="" class="chartContainer"></div>
         <div id="" class="chartContainer"></div>
         <div id="" class="chartContainer"></div>
@@ -334,19 +334,73 @@
             "height": $leftLayout.height() / 3 + "px"
           });
           var geoMap = createGeoMap();
+          var calMap = createCalMap();
+          var lineMap01 = createLineMap(document.getElementById("lineMap01"));
+          var lineMap02 = createLineMap(document.getElementById("lineMap02"));
           imFile(this, function () {
-            var tempData = [];
-            for (var i = 0; i < workData01.length; i++) {
-              tempData[i] = {
+            var tempData01 = [];
+            for (let i = 0; i < workData01.length; i++) {
+              tempData01[i] = {
                 name: workData01[i].用户名称,
                 value: [workData01[i].经度值, workData01[i].纬度值]
               }
             }
             geoMap.setOption({
               series: [{
-                data: tempData
+                data: tempData01
               }]
             });
+            var tempData02 = [];
+            var tempData03 = [];
+            var tempData04 = [];
+            var tempData05 = [];
+            var tempData06 = [];
+            var tempData07 = [];
+            for (let i = 0; i < workData02.length; i++) {
+              tempData02[i] = [new Date(workData02[i].时间), workData02[i].A相电压];
+              tempData03[i] = [new Date(workData02[i].时间), workData02[i].B相电压];
+              tempData04[i] = [new Date(workData02[i].时间), workData02[i].C相电压];
+              tempData05[i] = [new Date(workData02[i].时间), workData02[i].A电流];
+              tempData06[i] = [new Date(workData02[i].时间), workData02[i].B电流];
+              tempData07[i] = [new Date(workData02[i].时间), workData02[i].C电流];
+            }
+            lineMap01.setOption({
+              xAxis: {
+                data: tempData02.map(function (item) {
+                  return item[0];
+                })
+              },
+              series: [{
+                name: 'A相',
+                data: tempData02
+              }, {
+                name: 'B相',
+                data: tempData03
+              }, {
+                name: 'C相',
+                data: tempData04
+              }]
+            })
+            lineMap02.setOption({
+              title: {
+                text: '电流曲线'
+              },
+              xAxis: {
+                data: tempData05.map(function (item) {
+                  return item[0];
+                })
+              },
+              series: [{
+                name: 'A相',
+                data: tempData05
+              }, {
+                name: 'B相',
+                data: tempData06
+              }, {
+                name: 'C相',
+                data: tempData07
+              }]
+            })
           });
         }
       }
