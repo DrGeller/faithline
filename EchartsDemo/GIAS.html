@@ -60,6 +60,7 @@
       width: 100%;
       height: 100px;
       margin-top: 60px;
+      cursor: default;
     }
 
     .uploadBox .tip div {
@@ -74,7 +75,6 @@
     .uploadBox .tip div span {
       font-weight: bold;
     }
-
 
     .uploadBox .inputFile {
       position: relative;
@@ -222,37 +222,75 @@
       border-top: 4px solid #bf0f0f;
     }
 
-    .mainView .leftLayout {
+    .mainView .topLayout {
+      position: absolute;
+      width: 100%;
+      height: 45%;
+      top: 0px;
+      right: 0px;
+    }
+
+    .topLayout .mapContainer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+      background-color: #ececec;
+      border-bottom: 4px solid #cccccc;
+    }
+
+    .mainView .bottomLayout {
+      position: absolute;
+      width: 100%;
+      height: 55%;
+      left: 0px;
+      top: 45%;
+      overflow: hidden;
+    }
+
+    .mainView .bottomLayout .leftLayout {
       position: absolute;
       width: 40%;
       height: 100%;
       left: 0px;
       top: 0px;
-      overflow: hidden;
     }
 
-    .leftLayout .chartContainer {
+    .bottomLayout .leftLayout .chartContainer {
+      display: inline-block;
       width: 100%;
       background-color: #ececec;
       border-bottom: 1px solid #cccccc;
     }
 
-    .mainView .rightLayout {
+    .mainView .bottomLayout .rightLayout {
       position: absolute;
       width: 60%;
       height: 100%;
       left: 40%;
-      right: 0px;
     }
 
-    .rightLayout .mapContainer {
+    .bottomLayout .rightLayout .topLayout {
       position: absolute;
       left: 0px;
-      right: 0px;
       top: 0px;
-      bottom: 0px;
-      background-color: #ececec;
-      border-left: 4px solid #cccccc;
+      width: 100%;
+      height: 50%;
+    }
+
+    .bottomLayout .rightLayout .bottomLayout {
+      position: absolute;
+      left: 0px;
+      top: 50%;
+      width: 100%;
+      height: 50%;
+    }
+
+    .bottomLayout .rightLayout .topLayout .chartContainer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
     }
   </style>
 
@@ -261,16 +299,20 @@
 <body onload="stage01()">
   <div class="mainContainer">
     <div id="mainView" class="mainView">
-      <div class="leftLayout">
-        <div id="calendarMap" class="chartContainer"></div>
-        <div id="lineMap01" class="chartContainer"></div>
-        <div id="lineMap02" class="chartContainer"></div>
-        <div id="" class="chartContainer"></div>
-        <div id="" class="chartContainer"></div>
-        <div id="" class="chartContainer"></div>
-      </div>
-      <div class="rightLayout">
+      <div class="topLayout">
         <div id="mapContainer" class="mapContainer"></div>
+      </div>
+      <div class="bottomLayout">
+        <div class="leftLayout">
+          <div id="lineMap01" class="chartContainer"></div>
+          <div id="lineMap02" class="chartContainer"></div>
+        </div>
+        <div class="rightLayout">
+          <div class="topLayout">
+            <div id="calendarMap" class="chartContainer"></div>
+          </div>
+          <div class="bottomLayout"></div>
+        </div>
       </div>
     </div>
     <div id="filePreview" class="filePreview">
@@ -283,145 +325,184 @@
       </div>
     </div>
     <div id="uploadBox" class="uploadBox">
-      <div class="tip">
+      <div id="godButton" class="tip">
         <div>点击
           <span>获取</span> 或
           <span>选择</span> 经纬度数据
         </div>
       </div>
       <div class="inputFile">
-        <input id="fileUploader" type="file" style="position:absolute;opacity:0" />
         <div id="uploadButton" class="uploadButton">
           <span>获取</span>
         </div>
       </div>
       <div class="inputFile">
-        <input id="fileSelector" type="file" style="position:absolute;opacity:0" />
         <div id="selectButton" class="uploadButton">
           <span>选择</span>
+
         </div>
       </div>
+      <input id="fileSelecter" type="file" style="position:absolute;display:none" />
     </div>
     <script type="text/javascript">
       var uploadBox = document.getElementById("uploadBox");
-      var fileUploader = document.getElementById("fileUploader");
       var fileSelecter = document.getElementById("fileSelecter");
       var uploadButton = document.getElementById("uploadButton");
       var selectButton = document.getElementById("selectButton");
+      var godButton = document.getElementById("godButton");
       var filePreview = document.getElementById("filePreview");
       var mianView = document.getElementById("mainView");
       var fileTable = document.getElementById("fileTable");
       var nextButton = document.getElementById("nextButton");
-      var $leftLayout = $(".leftLayout");
+      var $bottomLayout = $(".bottomLayout");
       var $chartContainer = $(".chartContainer");
 
       function stage01() {
-        uploadButton.onclick = function () {
-          fileUploader.click();
+        godButton.onclick = function () {
+          fileSelecter.click();
+          fileSelecter.onchange = function () {
+            imFile(this, function () {
+              var problemData = getProblemKey([workData03, workData04]);
+              console.log(problemData);
+              
+              /*if (workData04[i].A相电压 < 198) {
+                tempArray[i] = {
+                  异动类型: "公变电压异常",
+                  类型: "低电压",
+                  key: i
+                }
+              } else if () {
+                tempArray[i] = {
+                  异动类型: "公变表计断流",
+                  台区编码:,
+                  A相电流:,
+                  B相电流:,
+                  C相电流:,
+                }
+              } else if () {
+                tempArray[i] = {
+                  异动类型: "负载率异常",
+                  台区编码:,
+
+                }
+              }
+              for (let i = 0; i < workData01.length; i++) {
+                if (workData01)
+                  tempData01[i] = {
+                    name: workData01[i].用户名称,
+                    value: [workData01[i].经度值, workData01[i].纬度值]
+                  }
+              }
+              tempData02 = [];
+              tempData03 = [];
+              tempData04 = [];
+              tempData05 = [];
+              tempData06 = [];
+              tempData07 = [];
+              for (let i = 0; i < workData04.length; i++) {
+                tempData02[i] = [new Date(workData04[i].时间), workData04[i].A相电压];
+                tempData03[i] = [new Date(workData04[i].时间), workData04[i].B相电压];
+                tempData04[i] = [new Date(workData04[i].时间), workData04[i].C相电压];
+                tempData05[i] = [new Date(workData04[i].时间), workData04[i].A电流];
+                tempData06[i] = [new Date(workData04[i].时间), workData04[i].B电流];
+                tempData07[i] = [new Date(workData04[i].时间), workData04[i].C电流];
+              }*/
+            });
+          }
         }
-        fileUploader.onchange = function () {
+      }
+
+      //获取地理位置经纬度信息
+      uploadButton.onclick = function () {
+        fileSelecter.value = "";
+        fileSelecter.click();
+        fileSelecter.onchange = function () {
           imFile(this, function () {
-            stage02();
+            uploadBox.style.display = "none";
+            filePreview.style.display = "block";
+            displayTable();
+            nextButton.onclick = function () {
+              //filePreview.style.display = "none";
+              //mainView.style.display = "block";
+              //getGeoInfo();
+              //int = setInterval("getGeoInfo()",60000);
+            }
           });
         }
-        selectButton.onclick = function () {
-          fileSelector.click();
-        }
-        fileSelector.onchange = function () {
+      }
+
+      //选取本地数据
+      selectButton.onclick = function () {
+        fileSelecter.value = "";
+        fileSelecter.click();
+        fileSelecter.onchange = function () {
           uploadBox.style.display = "none";
           mainView.style.display = "block";
           $chartContainer.css({
-            "height": $leftLayout.height() / 3 + "px"
+            "height": $bottomLayout.height() / 2 + "px"
           });
+
+          //生成地理图
           var geoMap = createGeoMap();
+          geoMap.setOption({//设置地理图参数
+            series: [{
+              data: tempData01
+            }]
+          });
+
+          //生成日历图
           var calMap = createCalMap();
+          calMap.setOption({//设置日历图参数
+            series: [{
+
+            }]
+          });
+
+          //生成曲线图
           var lineMap01 = createLineMap(document.getElementById("lineMap01"));
           var lineMap02 = createLineMap(document.getElementById("lineMap02"));
-          imFile(this, function () {
-            var tempData01 = [];
-            for (let i = 0; i < workData01.length; i++) {
-              tempData01[i] = {
-                name: workData01[i].用户名称,
-                value: [workData01[i].经度值, workData01[i].纬度值]
-              }
-            }
-            geoMap.setOption({
-              series: [{
-                data: tempData01
-              }]
-            });
-            var tempData02 = [];
-            var tempData03 = [];
-            var tempData04 = [];
-            var tempData05 = [];
-            var tempData06 = [];
-            var tempData07 = [];
-            for (let i = 0; i < workData02.length; i++) {
-              tempData02[i] = [new Date(workData02[i].时间), workData02[i].A相电压];
-              tempData03[i] = [new Date(workData02[i].时间), workData02[i].B相电压];
-              tempData04[i] = [new Date(workData02[i].时间), workData02[i].C相电压];
-              tempData05[i] = [new Date(workData02[i].时间), workData02[i].A电流];
-              tempData06[i] = [new Date(workData02[i].时间), workData02[i].B电流];
-              tempData07[i] = [new Date(workData02[i].时间), workData02[i].C电流];
-            }
-            lineMap01.setOption({
-              xAxis: {
-                data: tempData02.map(function (item) {
-                  return item[0];
-                })
-              },
-              series: [{
-                name: 'A相',
-                data: tempData02
-              }, {
-                name: 'B相',
-                data: tempData03
-              }, {
-                name: 'C相',
-                data: tempData04
-              }]
-            })
-            lineMap02.setOption({
-              title: {
-                text: '电流曲线'
-              },
-              xAxis: {
-                data: tempData05.map(function (item) {
-                  return item[0];
-                })
-              },
-              series: [{
-                name: 'A相',
-                data: tempData05
-              }, {
-                name: 'B相',
-                data: tempData06
-              }, {
-                name: 'C相',
-                data: tempData07
-              }]
-            })
+          lineMap01.setOption({//设置电压曲线参数
+            title: {
+              text: "电压曲线"
+            },
+            xAxis: {
+              data: tempData02.map(function (item) {
+                return item[0];
+              })
+            },
+            series: [{
+              name: 'A相',
+              data: tempData02
+            }, {
+              name: 'B相',
+              data: tempData03
+            }, {
+              name: 'C相',
+              data: tempData04
+            }]
+          });
+          lineMap02.setOption({//设置电压曲线参数
+            title: {
+              text: '电流曲线'
+            },
+            xAxis: {
+              data: tempData05.map(function (item) {
+                return item[0];
+              })
+            },
+            series: [{
+              name: 'A相',
+              data: tempData05
+            }, {
+              name: 'B相',
+              data: tempData06
+            }, {
+              name: 'C相',
+              data: tempData07
+            }]
           });
         }
       }
-
-      function stage02() {
-        uploadBox.style.display = "none";
-        filePreview.style.display = "block";
-        displayTable();
-        nextButton.onclick = function () {
-          //filePreview.style.display = "none";
-          //mainView.style.display = "block";
-          //getGeoInfo();
-          //int = setInterval("getGeoInfo()",60000);
-          stage03();
-        }
-      }
-
-      function stage03() {
-        nextButton.click();
-      }
-      stage03();
     </script>
   </div>
 </body>

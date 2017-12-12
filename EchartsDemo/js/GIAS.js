@@ -19,8 +19,8 @@ function imFile(obj, fun) {
     workData01 = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])));
     workData02 = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[1]])));
     workData03 = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[2]])));
-    console.log(workData02);
-    console.log(workData03);
+    workData04 = eval(JSON.stringify(XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[3]])));
+    console.log("OK");
     fun();
   }
 }
@@ -43,9 +43,9 @@ function downloadExcel(json, type) {
         position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
       }))).reduce(
     (prev, next) => prev.concat(next)
-  ).forEach((v, i) => tmpData[v.position] = {
-    v: v.v
-  });
+    ).forEach((v, i) => tmpData[v.position] = {
+      v: v.v
+    });
   var outputPos = Object.keys(tmpData); //设置区域,比如表格从A1到D10
   var tmpWB = {
     SheetNames: ['mySheet'], //保存的表标题
@@ -62,8 +62,8 @@ function downloadExcel(json, type) {
     bookSST: false,
     type: 'binary' //这里的数据是用来定义导出的格式类型
   }))], {
-    type: ""
-  }); //创建二进制对象写入转换好的字节流
+      type: ""
+    }); //创建二进制对象写入转换好的字节流
   var href = URL.createObjectURL(tmpDown); //创建对象超链接
   document.getElementById("hf").href = href; //绑定a标签
   document.getElementById("hf").click(); //模拟点击实现下载
@@ -180,6 +180,157 @@ function getGeoInfo() {
   ajaxRequest();
 }
 
+//获取异动信息
+getProblemKey = function (dataArray) {
+  var key01 = [];//低电压异常键
+  var key02 = [];//过电压异常键
+  var key03 = [];//公变表计断流异常键
+  var key04 = [];//重载台区异常键
+  var key05 = [];//重载台区异常键
+  var key06 = [];//过载台区异常键
+  for (let i = 0; i < dataArray[1].length; i++) {
+    if (dataArray[1][i].A相电压 < 198) {
+      key01.push({
+        相序: 1,
+        key: i,
+        type: "低电压"
+      });
+    }
+    if (dataArray[1][i].B相电压 < 198) {
+      key01.push({
+        相序: 2,
+        key: i,
+        type: "低电压"
+      });
+    }
+    if (dataArray[1][i].C相电压 < 198) {
+      key01.push({
+        相序: 3,
+        key: i,
+        type: "低电压"
+      });
+    }
+    if (dataArray[1][i].A相电压 > 250) {
+      key02.push({
+        相序: 1,
+        key: i,
+        type: "过电压"
+      });
+    }
+    if (dataArray[1][i].B相电压 > 250) {
+      key02.push({
+        相序: 2,
+        key: i,
+        type: "过电压"
+      });
+    }
+    if (dataArray[1][i].C相电压 > 250) {
+      key02.push({
+        相序: 3,
+        key: i,
+        type: "过电压"
+      });
+    }
+    if (dataArray[1][i].A相电流 * dataArray[1][i].B相电流 * dataArray[1][i].C相电流 == 0) {
+      if (dataArray[1][i].A相电流 + dataArray[1][i].B相电流 + dataArray[1][i].C相电流 != 0) {
+        key03.push({
+          key: i,
+          type: "断流"
+        })
+      }
+    }
+    if (dataArray[1][i].A相电压 * dataArray[1][i].B相电压 * dataArray[1][i].C相电压 == 0) {
+      if (dataArray[1][i].A相电压 + dataArray[1][i].B相电压 + dataArray[1][i].C相电压 != 0) {
+        key04.push({
+          key: i,
+          type: "失压"
+        })
+      }
+    }
+    for (let j = 0; j < dataArray[0].length; j++) {
+      if (dataArray[1][i].台区编码 == dataArray[0][j].台区编码) {
+        let a = (dataArray[1][i].A相电流 * dataArray[1][i].A相电压
+          + dataArray[1][i].B相电流 * dataArray[1][i].B相电压
+          + dataArray[1][i].C相电流 * dataArray[1][i].C相电压) / 1000 / dataArray[0][j].铭牌容量
+        if (a > 0.8 && a < 1) {
+          key05.push({
+            key: i,
+            type: "重载"
+          })
+        } else if (a > 1) {
+          key06.push({
+            key: i,
+            type: "过载"
+          })
+        }
+      }
+    }
+  }
+  console.log(key01);
+  console.log(key02);
+  console.log(key03);
+  console.log(key04);
+  console.log(key05);
+  console.log(key06);
+  var keyData01 = [];//低电压异常键筛选数据
+  var keyData02 = [];//过电压异常键筛选数据
+  var keyData03 = [];//断流异常键筛选数据
+  var keyData04 = [];//失压异常键筛选数据
+  var keyData05 = [];//重载异常键筛选数据
+  var keyData06 = [];//过载异常键筛选数据
+  filterData = function (key) {
+    for (let i = 0; i < key.length; i++) {
+      if (i > 1 && parseInt(key[i].key / 96) == parseInt(key[i - 1].key / 96)) {
+        if (key[i].type == "低电压" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+          keyData01.push({
+            type: "低电压",
+            tgNo: dataArray[1][key[i].key].台区编码,
+            key: key[i].key
+          })
+        } else if(key[i].type == "过电压" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+          keyData02.push({
+            type: "过电压",
+            tgNo: dataArray[1][key[i].key].台区编码,
+            key: key[i].key
+          })
+        } else if(key[i].type == "断流" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+          keyData03.push({
+            type: "断流",
+            tgNo: dataArray[1][key[i].key].台区编码,
+            key: key[i].key
+          })
+        } else if(key[i].type == "失压" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+          keyData04.push({
+            type: "失压",
+            tgNo: dataArray[1][key[i].key].台区编码,
+            key: key[i].key
+          })
+        } else if(key[i].type == "重载" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+          keyData05.push({
+            type: "重载",
+            tgNo: dataArray[1][key[i].key].台区编码,
+            key: key[i].key
+          })
+        } else if(key[i].type == "过载" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+          keyData06.push({
+            type: "过载",
+            tgNo: dataArray[1][key[i].key].台区编码,
+            key: key[i].key
+          })
+        }
+      }
+    }
+  }
+  filterData(key01);
+  filterData(key02);
+  filterData(key03);
+  filterData(key04);
+  filterData(key05);
+  filterData(key06);
+  return [keyData01, keyData02, keyData03, keyData04, keyData05, keyData06]
+}
+
+//生成日历图
 function createCalMap() {
   var option = {
     tooltip: {
@@ -243,6 +394,7 @@ function createCalMap() {
   return calendarMap;
 }
 
+//生成地理图
 function createGeoMap() {
   var option = {
     title: {
@@ -278,21 +430,16 @@ function createGeoMap() {
   var mapChart = echarts.init(document.getElementById('mapContainer'));
   mapChart.setOption(option);
   var bmap = mapChart.getModel().getComponent('bmap').getBMap();
-  bmap.addControl(new BMap.MapTypeControl({
-    mapTypes: [
-      BMAP_NORMAL_MAP,
-      BMAP_HYBRID_MAP
-    ]
-  }));
   bmap.addControl(new BMap.NavigationControl());
   bmap.addControl(new BMap.ScaleControl());
   return mapChart;
 }
 
+//生成折线图
 function createLineMap(obj) {
   var option = {
     title: {
-      
+
     },
     legdend: {
       data: ['A相', 'B相', 'C相']
@@ -319,10 +466,10 @@ function createLineMap(obj) {
       }
     },
     dataZoom: [{
-      type:"slider",
+      type: "slider",
       xAxisIndex: [0],
       start: 0,
-      end:10,
+      end: 10,
       filterMode: 'filter'
     }, {
       type: "slider",
