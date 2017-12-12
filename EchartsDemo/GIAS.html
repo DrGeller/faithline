@@ -362,51 +362,62 @@
           fileSelecter.click();
           fileSelecter.onchange = function () {
             imFile(this, function () {
+              var tempArray = [];
               var problemData = getProblemKey([workData03, workData04]);
-              console.log(problemData);
-              
-              /*if (workData04[i].A相电压 < 198) {
-                tempArray[i] = {
-                  异动类型: "公变电压异常",
-                  类型: "低电压",
-                  key: i
-                }
-              } else if () {
-                tempArray[i] = {
-                  异动类型: "公变表计断流",
-                  台区编码:,
-                  A相电流:,
-                  B相电流:,
-                  C相电流:,
-                }
-              } else if () {
-                tempArray[i] = {
-                  异动类型: "负载率异常",
-                  台区编码:,
-
-                }
-              }
-              for (let i = 0; i < workData01.length; i++) {
-                if (workData01)
-                  tempData01[i] = {
-                    name: workData01[i].用户名称,
-                    value: [workData01[i].经度值, workData01[i].纬度值]
+              //异动数据遍历
+              var c = 0;
+              for (let i = 0; i < 6; i++) {
+                for (let j = 0; j < problemData[i].length; j++) {
+                  if (j > 1 && new Date(workData04[problemData[i][j].key].采集时间).getDay() != new Date(workData04[
+                      problemData[i][j - 1].key].采集时间).getDay()) {
+                    for (let k = 0; k < workData03.length; k++) {
+                      if (workData03[k].台区编码 == problemData[i][j].tgNo) {
+                        tempArray[c] = {
+                          type: problemData[i][j].type,
+                          cuNo: workData03[k].用户编码,
+                          tgNo: problemData[i][j].tgNo,
+                          year: new Date(workData04[problemData[i][j].key].采集时间).getFullYear(),
+                          month: new Date(workData04[problemData[i][j].key].采集时间).getMonth(),
+                          day: new Date(workData04[problemData[i][j].key].采集时间).getDay()
+                        };
+                      }
+                    }
+                    for (let k = 0; k < workData01.length; k++) {
+                      if (workData01[k].用户编码 == tempArray[c].cuNo) {
+                        tempArray[c].lng = workData01[k].经度值;
+                        tempArray[c].lat = workData01[k].纬度值;
+                      }
+                    }
+                    c++;
                   }
+                }
               }
-              tempData02 = [];
-              tempData03 = [];
-              tempData04 = [];
-              tempData05 = [];
-              tempData06 = [];
-              tempData07 = [];
-              for (let i = 0; i < workData04.length; i++) {
-                tempData02[i] = [new Date(workData04[i].时间), workData04[i].A相电压];
-                tempData03[i] = [new Date(workData04[i].时间), workData04[i].B相电压];
-                tempData04[i] = [new Date(workData04[i].时间), workData04[i].C相电压];
-                tempData05[i] = [new Date(workData04[i].时间), workData04[i].A电流];
-                tempData06[i] = [new Date(workData04[i].时间), workData04[i].B电流];
-                tempData07[i] = [new Date(workData04[i].时间), workData04[i].C电流];
-              }*/
+              console.log(tempArray);
+              //封装地理信息数据
+              geoData = [];
+              for (let i = 0; i < workData01.length; i++) {
+                geoData[i] = {
+                  name: workData01[i].用户名称,
+                  value: [workData01[i].经度值, workData01[i].纬度值]
+                }
+              }
+              //封装日历图数据
+              calendarData = [];
+              var cuData = [];
+              for (let i = 0; i < tempArray.length;) {
+                var date = tempArray[i].year + "-" + (tempArray[i].month - 0 + 1).toString() + "-" + (tempArray[
+                  i].day - 0 + 1).toString()
+                b = 0;
+                for (let j = i; j < tempArray.length; j++) {
+                  if (tempArray[i].day === tempArray[j].day) {
+                    cuData.push(tempArray[i].cuNo);
+                    b++;
+                  }
+                }
+                calendarData.push([echarts.format.formatTime('yyyy-MM-dd', date), b]);
+                i += b;
+              }
+              console.log(calendarData);
             });
           }
         }
@@ -444,24 +455,24 @@
 
           //生成地理图
           var geoMap = createGeoMap();
-          geoMap.setOption({//设置地理图参数
+          geoMap.setOption({ //设置地理图参数
             series: [{
-              data: tempData01
+              data: geoData
             }]
           });
 
           //生成日历图
           var calMap = createCalMap();
-          calMap.setOption({//设置日历图参数
+          calMap.setOption({ //设置日历图参数
             series: [{
-
+              data: calendarData
             }]
           });
 
           //生成曲线图
           var lineMap01 = createLineMap(document.getElementById("lineMap01"));
           var lineMap02 = createLineMap(document.getElementById("lineMap02"));
-          lineMap01.setOption({//设置电压曲线参数
+          lineMap01.setOption({ //设置电压曲线参数
             title: {
               text: "电压曲线"
             },
@@ -481,7 +492,7 @@
               data: tempData04
             }]
           });
-          lineMap02.setOption({//设置电压曲线参数
+          lineMap02.setOption({ //设置电压曲线参数
             title: {
               text: '电流曲线'
             },
