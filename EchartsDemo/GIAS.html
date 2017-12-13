@@ -369,7 +369,7 @@
               for (let i = 0; i < 6; i++) {
                 for (let j = 0; j < problemData[i].length; j++) {
                   if (j > 1 && new Date(workData04[problemData[i][j].key].采集时间).getDay() != new Date(workData04[
-                      problemData[i][j - 1].key].采集时间).getDay()) {
+                    problemData[i][j - 1].key].采集时间).getDay()) {
                     for (let k = 0; k < workData03.length; k++) {
                       if (workData03[k].台区编码 == problemData[i][j].tgNo) {
                         tempArray[c] = {
@@ -402,22 +402,30 @@
                 }
               }
               //封装日历图数据
-              calendarData = [];
-              var cuData = [];
-              for (let i = 0; i < tempArray.length;) {
-                var date = tempArray[i].year + "-" + (tempArray[i].month - 0 + 1).toString() + "-" + (tempArray[
-                  i].day - 0 + 1).toString()
+              /*calendarData = [];
+              var returnData = [];
+              for (let i = 0; i < tempArray.length; i++) {
                 b = 0;
                 for (let j = i; j < tempArray.length; j++) {
                   if (tempArray[i].day === tempArray[j].day) {
-                    cuData.push(tempArray[i].cuNo);
+                    let c = returnData.map(function(currentValue,index,array) {
+                      return currentValue.indexOf(tempArray[i].cuNo)
+                    })
+                    console.log(c);
+                    if ( c < 0) {
+                      var date = tempArray[i].year + "-" + (tempArray[i].month - 0 + 1).toString() + "-" + (tempArray[
+                        i].day - 0 + 1).toString();
+                      date = echarts.format.formatTime('yyyy-MM-dd', date);
+                      returnData.push([
+                        date,
+                        tempArray[j].cuNo
+                      ])
+                    }
                     b++;
                   }
                 }
-                calendarData.push([echarts.format.formatTime('yyyy-MM-dd', date), b]);
-                i += b;
-              }
-              console.log(calendarData);
+              }*/
+              
             });
           }
         }

@@ -43,9 +43,9 @@ function downloadExcel(json, type) {
         position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
       }))).reduce(
     (prev, next) => prev.concat(next)
-  ).forEach((v, i) => tmpData[v.position] = {
-    v: v.v
-  });
+    ).forEach((v, i) => tmpData[v.position] = {
+      v: v.v
+    });
   var outputPos = Object.keys(tmpData); //设置区域,比如表格从A1到D10
   var tmpWB = {
     SheetNames: ['mySheet'], //保存的表标题
@@ -62,8 +62,8 @@ function downloadExcel(json, type) {
     bookSST: false,
     type: 'binary' //这里的数据是用来定义导出的格式类型
   }))], {
-    type: ""
-  }); //创建二进制对象写入转换好的字节流
+      type: ""
+    }); //创建二进制对象写入转换好的字节流
   var href = URL.createObjectURL(tmpDown); //创建对象超链接
   document.getElementById("hf").href = href; //绑定a标签
   document.getElementById("hf").click(); //模拟点击实现下载
@@ -275,37 +275,37 @@ getProblemKey = function (dataArray) {
   filterData = function (key) {
     for (let i = 0; i < key.length; i++) {
       if (i > 1 && parseInt(key[i].key / 96) == parseInt(key[i - 1].key / 96)) {
-        if (key[i].type == "低电压" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+        if (key[i].type == "低电压" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 2) {
           keyData01.push({
             type: "低电压",
             tgNo: dataArray[1][key[i].key].台区编码,
             key: key[i].key
           })
-        } else if (key[i].type == "过电压" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+        } else if (key[i].type == "过电压" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 2) {
           keyData02.push({
             type: "过电压",
             tgNo: dataArray[1][key[i].key].台区编码,
             key: key[i].key
           })
-        } else if (key[i].type == "断流" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+        } else if (key[i].type == "断流" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 2) {
           keyData03.push({
             type: "断流",
             tgNo: dataArray[1][key[i].key].台区编码,
             key: key[i].key
           })
-        } else if (key[i].type == "失压" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+        } else if (key[i].type == "失压" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 2) {
           keyData04.push({
             type: "失压",
             tgNo: dataArray[1][key[i].key].台区编码,
             key: key[i].key
           })
-        } else if (key[i].type == "重载" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+        } else if (key[i].type == "重载" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 2) {
           keyData05.push({
             type: "重载",
             tgNo: dataArray[1][key[i].key].台区编码,
             key: key[i].key
           })
-        } else if (key[i].type == "过载" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 8) {
+        } else if (key[i].type == "过载" && key[i].key != key[i - 1].key && key[i].key % 96 - key[i - 1].key % 96 <= 2) {
           keyData06.push({
             type: "过载",
             tgNo: dataArray[1][key[i].key].台区编码,
@@ -538,16 +538,4 @@ function createLineMap(obj) {
   var lineChart = echarts.init(obj);
   lineChart.setOption(option);
   return lineChart;
-}
-Array.prototype.unique = function () {
-  var r = new Array();
-  label: for (var i = 0, n = this.length; i < n; i++) {
-    for (var x = 0, y = r.length; x < y; x++) {
-      if (r[x] == this[i]) {
-        continue label;
-      }
-    }
-    r[r.length] = this[i];
-  }
-  return r;
 }
