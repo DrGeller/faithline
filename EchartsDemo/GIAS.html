@@ -107,11 +107,10 @@
 
     .mainContainer .filePreview {
       position: absolute;
-      width: 1600px;
-      height: 900px;
-      left: 50%;
+      width: 80%;
+      height: 90%;
+      left: 10%;
       top: 30px;
-      margin-left: -800px;
       box-sizing: border-box;
       background-color: #fafafa;
       display: none;
@@ -121,7 +120,7 @@
     .filePreview .actionBar {
       position: absolute;
       width: 100%;
-      height: 98px;
+      height: 20%;
       top: 0px;
       border-bottom: 1px solid #bf0f0f;
     }
@@ -148,12 +147,13 @@
 
     .filePreview .tableContainer {
       position: absolute;
-      width: 1580px;
-      height: 802px;
-      left: 10px;
+      width: 80%;
+      height: 80%;
+      left: 10%;
       bottom: 0px;
       border-left: 1px solid #cecece;
       border-right: 1px solid #cecece;
+      overflow: auto;
     }
 
     .tableContainer table {
@@ -225,7 +225,7 @@
     .mainView .topLayout {
       position: absolute;
       width: 100%;
-      height: 45%;
+      height: 40%;
       top: 0px;
       right: 0px;
     }
@@ -243,15 +243,15 @@
     .mainView .bottomLayout {
       position: absolute;
       width: 100%;
-      height: 55%;
+      height: 60%;
       left: 0px;
-      top: 45%;
+      top: 40%;
       overflow: hidden;
     }
 
     .mainView .bottomLayout .leftLayout {
       position: absolute;
-      width: 40%;
+      width: 50%;
       height: 100%;
       left: 0px;
       top: 0px;
@@ -266,9 +266,9 @@
 
     .mainView .bottomLayout .rightLayout {
       position: absolute;
-      width: 60%;
+      width: 50%;
       height: 100%;
-      left: 40%;
+      left: 50%;
     }
 
     .bottomLayout .rightLayout .topLayout {
@@ -279,18 +279,70 @@
       height: 50%;
     }
 
+    .bottomLayout .rightLayout .topLayout .chartContainer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
     .bottomLayout .rightLayout .bottomLayout {
       position: absolute;
       left: 0px;
       top: 50%;
       width: 100%;
       height: 50%;
+      border: solid 1px #585858;
     }
 
-    .bottomLayout .rightLayout .topLayout .chartContainer {
+    .bottomLayout .rightLayout .bottomLayout .infoContainer {
       position: absolute;
-      width: 100%;
+      width: 33%;
       height: 100%;
+    }
+
+    .bottomLayout .rightLayout .bottomLayout #info01 {
+      left: 0px;
+      top: 0px;
+    }
+
+    .bottomLayout .rightLayout .bottomLayout #info02 {
+      left: 33%;
+      top: 0px;
+    }
+
+    .bottomLayout .rightLayout .bottomLayout #info03 {
+      left: 66%;
+      top: 0px;
+    }
+
+    .infoContainer .tgName {
+      width: 100%;
+      height: 20%;
+      line-height: auto;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 18px;
+      background-color: #d3d3d3;
+    }
+
+    .infoContainer .tgNo {
+      height: 20%;
+      line-height: auto;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 18px;
+      background-color: #ffffff;
+    }
+
+    .infoContainer .detail {
+      height: 60%;
+      padding-top: 5px;
+    }
+
+    .infoContainer .detail div {
+      font-size: 14px;
+      width: 100%;
+      padding-left: 10px;
     }
   </style>
 
@@ -311,7 +363,32 @@
           <div class="topLayout">
             <div id="calendarMap" class="chartContainer"></div>
           </div>
-          <div class="bottomLayout"></div>
+          <div class="bottomLayout">
+            <div id="info01" class="infoContainer" style="border-right:solid 1px #585858">
+              <div class="tgName">晏坝黑虎村2组</div>
+              <div class="tgNo">2000055906</div>
+              <div class="detail">
+                <div>异动类型1：低电压</div>
+                <div>条件概率：</div>
+              </div>
+            </div>
+            <div id="info02" class="infoContainer" style="border-right:solid 1px #585858">
+              <div class="tgName">天山乡福家沟村</div>
+              <div class="tgNo">2000056490</div>
+              <div class="detail">
+                <div>异动类型1：低电压<br/>异动类型2：三相不平衡</div>
+                <div>条件概率：<br/>(低电压|三相不平衡):76.29%</div>
+              </div>
+            </div>
+            <div id="info03" class="infoContainer">
+              <div class="tgName">晏坝乡小沟村</div>
+              <div class="tgNo">2000073191</div>
+              <div class="detail">
+                <div>异动类型1：低电压<br/>异动类型2：断流</div>
+                <div>条件概率：<br/>(低电压|断流):21.32%</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -356,6 +433,7 @@
       var nextButton = document.getElementById("nextButton");
       var $bottomLayout = $(".bottomLayout");
       var $chartContainer = $(".chartContainer");
+      var $infoContainer = $(".bottomLayout .rightLayout .bottomLayout .infoContainer");
 
       function stage01() {
         godButton.onclick = function () {
@@ -364,12 +442,14 @@
             imFile(this, function () {
               var tempArray = [];
               var problemData = getProblemKey([workData03, workData04]);
+              console.log(problemData);
               //异动数据遍历
               var c = 0;
+              var cc = 0;
               for (let i = 0; i < 6; i++) {
                 for (let j = 0; j < problemData[i].length; j++) {
                   if (j > 1 && new Date(workData04[problemData[i][j].key].采集时间).getDay() != new Date(workData04[
-                    problemData[i][j - 1].key].采集时间).getDay()) {
+                      problemData[i][j - 1].key].采集时间).getDay()) {
                     for (let k = 0; k < workData03.length; k++) {
                       if (workData03[k].台区编码 == problemData[i][j].tgNo) {
                         tempArray[c] = {
@@ -380,52 +460,62 @@
                           month: new Date(workData04[problemData[i][j].key].采集时间).getMonth(),
                           day: new Date(workData04[problemData[i][j].key].采集时间).getDay()
                         };
+                        for (let k = 0; k < workData01.length; k++) {
+                          if (workData01[k].用户编码 == tempArray[c].cuNo) {
+                            tempArray[c].lng = workData01[k].经度值;
+                            tempArray[c].lat = workData01[k].纬度值;
+                          }
+                        }
+                        c++;
                       }
                     }
-                    for (let k = 0; k < workData01.length; k++) {
-                      if (workData01[k].用户编码 == tempArray[c].cuNo) {
-                        tempArray[c].lng = workData01[k].经度值;
-                        tempArray[c].lat = workData01[k].纬度值;
-                      }
-                    }
-                    c++;
                   }
                 }
               }
               console.log(tempArray);
+              tempData01 = []; //发生异动的用户编码
+              tempData02 = []; //发生异动的时间
+              tempData03 = []; //异动时间与用户编码关联
+              for (let i = 0; i < tempArray.length; i++) {
+                if (tempData01.indexOf(tempArray[i].cuNo) < 0) {
+                  tempData01.push(tempArray[i].cuNo);
+                }
+              }
+              for (let i = 0; i < tempArray.length; i++) {
+                if (tempData02.indexOf(tempArray[i].day) < 0) {
+                  tempData02.push(tempArray[i].day);
+                }
+              }
+              for (let i = 0; i < tempData02.length; i++) {
+                tempData03[i] = new Array;
+              }
+              for (let i = 0; i < tempData01.length; i++) {
+                for (let j = 0; j < tempArray.length; j++) {
+                  if (tempData01[i] == tempArray[j].cuNo) {
+                    for (let k = 0; k < tempData02.length; k++) {
+                      if (tempArray[j].day == tempData02[k] && tempData03[k].indexOf(tempArray[j].cuNo) < 0) {
+                        tempData03[k].push(tempArray[j].cuNo);
+                      }
+                    }
+                  }
+                }
+              }
               //封装地理信息数据
               geoData = [];
               for (let i = 0; i < workData01.length; i++) {
                 geoData[i] = {
-                  name: workData01[i].用户名称,
+                  name: workData01[i].用户编码,
                   value: [workData01[i].经度值, workData01[i].纬度值]
                 }
               }
               //封装日历图数据
-              /*calendarData = [];
-              var returnData = [];
-              for (let i = 0; i < tempArray.length; i++) {
-                b = 0;
-                for (let j = i; j < tempArray.length; j++) {
-                  if (tempArray[i].day === tempArray[j].day) {
-                    let c = returnData.map(function(currentValue,index,array) {
-                      return currentValue.indexOf(tempArray[i].cuNo)
-                    })
-                    console.log(c);
-                    if ( c < 0) {
-                      var date = tempArray[i].year + "-" + (tempArray[i].month - 0 + 1).toString() + "-" + (tempArray[
-                        i].day - 0 + 1).toString();
-                      date = echarts.format.formatTime('yyyy-MM-dd', date);
-                      returnData.push([
-                        date,
-                        tempArray[j].cuNo
-                      ])
-                    }
-                    b++;
-                  }
-                }
-              }*/
-              
+              calendarData = [];
+              for (let i = 0; i < tempData02.length; i++) {
+                var date = "2017" + "-" + "1" + "-" + (tempData02[i] - 0 + 1).toString();
+                date = echarts.format.formatTime('yyyy-MM-dd', date);
+                calendarData.push([date, tempData03[i].length, tempData03[i]]);
+              }
+              console.log(calendarData);
             });
           }
         }
@@ -441,12 +531,13 @@
             filePreview.style.display = "block";
             displayTable();
             nextButton.onclick = function () {
-              //filePreview.style.display = "none";
-              //mainView.style.display = "block";
-              //getGeoInfo();
-              //int = setInterval("getGeoInfo()",60000);
+              filePreview.style.display = "none";
+              uploadBox.style.display = "block";
+              getGeoInfo();
+              int = setInterval("getGeoInfo()",60000);
             }
           });
+
         }
       }
 
@@ -460,7 +551,12 @@
           $chartContainer.css({
             "height": $bottomLayout.height() / 2 + "px"
           });
-
+          $(".rightLayout .bottomLayout .infoContainer .tgName").css({
+            "line-height": $(".rightLayout .bottomLayout .infoContainer .tgName").height() + "px"
+          })
+          $(".rightLayout .bottomLayout .infoContainer .tgNo").css({
+            "line-height": $(".rightLayout .bottomLayout .infoContainer .tgNo").height() + "px"
+          })
           //生成地理图
           var geoMap = createGeoMap();
           geoMap.setOption({ //设置地理图参数
@@ -468,6 +564,71 @@
               data: geoData
             }]
           });
+          geoMap.on('click', function (p) {
+            var data01 = [];
+            var data02 = [];
+            var data03 = [];
+            var data04 = [];
+            var data05 = [];
+            var data06 = [];
+
+            for (let i = 0; i < workData03.length; i++) {
+              if (p.data.name == workData03[i].用户编码) {
+                var a = workData03[i].台区编码
+              }
+            }
+            for (let i = 0; i < workData04.length; i++) {
+              if (workData04[i].台区编码 == a) {
+                data01.push([new Date(workData04[i].采集时间), parseInt(workData04[i].A相电压)]);
+                data02.push([new Date(workData04[i].采集时间), parseInt(workData04[i].B相电压)]);
+                data03.push([new Date(workData04[i].采集时间), parseInt(workData04[i].C相电压)]);
+                data04.push([new Date(workData04[i].采集时间), parseInt(workData04[i].A相电流)]);
+                data05.push([new Date(workData04[i].采集时间), parseInt(workData04[i].B相电流)]);
+                data06.push([new Date(workData04[i].采集时间), parseInt(workData04[i].C相电流)]);
+              }
+            }
+            console.log(data01);
+            lineMap01.setOption({ //设置电压曲线参数
+              title: {
+                text: "电压曲线"
+              },
+              xAxis: {
+                data: data01.map(function (item) {
+                  return item[0];
+                })
+              },
+              series: [{
+                name: 'A相',
+                data: data01
+              }, {
+                name: 'B相',
+                data: data02
+              }, {
+                name: 'C相',
+                data: data03
+              }]
+            });
+            lineMap02.setOption({ //设置电压曲线参数
+              title: {
+                text: '电流曲线'
+              },
+              xAxis: {
+                data: data04.map(function (item) {
+                  return item[0];
+                })
+              },
+              series: [{
+                name: 'A相',
+                data: data04
+              }, {
+                name: 'B相',
+                data: data05
+              }, {
+                name: 'C相',
+                data: data06
+              }]
+            });
+          })
 
           //生成日历图
           var calMap = createCalMap();
@@ -476,50 +637,31 @@
               data: calendarData
             }]
           });
+          calMap.on('click', function (p) {
+            var a = [];
+            for (let i = 0; i < p.data[2].length; i++) {
+              for (let j = 0; j < workData01.length; j++) {
+                if (p.data[2][i] == workData01[j].用户编码) {
+                  a[i] = {
+                    name: workData01[j].用户编码,
+                    value: [workData01[j].经度值, workData01[j].纬度值]
+                  }
+                }
+              }
+            }
+            console.log(p.data);
+            geoMap.setOption({
+              series: [{
+                name: "异动",
+                symbolSize: 20,
+                data: a
+              }]
+            })
+          });
 
           //生成曲线图
           var lineMap01 = createLineMap(document.getElementById("lineMap01"));
           var lineMap02 = createLineMap(document.getElementById("lineMap02"));
-          lineMap01.setOption({ //设置电压曲线参数
-            title: {
-              text: "电压曲线"
-            },
-            xAxis: {
-              data: tempData02.map(function (item) {
-                return item[0];
-              })
-            },
-            series: [{
-              name: 'A相',
-              data: tempData02
-            }, {
-              name: 'B相',
-              data: tempData03
-            }, {
-              name: 'C相',
-              data: tempData04
-            }]
-          });
-          lineMap02.setOption({ //设置电压曲线参数
-            title: {
-              text: '电流曲线'
-            },
-            xAxis: {
-              data: tempData05.map(function (item) {
-                return item[0];
-              })
-            },
-            series: [{
-              name: 'A相',
-              data: tempData05
-            }, {
-              name: 'B相',
-              data: tempData06
-            }, {
-              name: 'C相',
-              data: tempData07
-            }]
-          });
         }
       }
     </script>

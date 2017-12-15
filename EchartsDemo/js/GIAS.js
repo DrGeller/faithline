@@ -43,9 +43,9 @@ function downloadExcel(json, type) {
         position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
       }))).reduce(
     (prev, next) => prev.concat(next)
-    ).forEach((v, i) => tmpData[v.position] = {
-      v: v.v
-    });
+  ).forEach((v, i) => tmpData[v.position] = {
+    v: v.v
+  });
   var outputPos = Object.keys(tmpData); //设置区域,比如表格从A1到D10
   var tmpWB = {
     SheetNames: ['mySheet'], //保存的表标题
@@ -62,8 +62,8 @@ function downloadExcel(json, type) {
     bookSST: false,
     type: 'binary' //这里的数据是用来定义导出的格式类型
   }))], {
-      type: ""
-    }); //创建二进制对象写入转换好的字节流
+    type: ""
+  }); //创建二进制对象写入转换好的字节流
   var href = URL.createObjectURL(tmpDown); //创建对象超链接
   document.getElementById("hf").href = href; //绑定a标签
   document.getElementById("hf").click(); //模拟点击实现下载
@@ -111,7 +111,7 @@ function displayTable() {
   fileTable.appendChild(thead);
   tbody = document.createElement("tbody");
   fileTable.appendChild(tbody);
-  for (var i = 0; i < 1000; i++) {
+  for (var i = 0; i < workData01.length; i++) {
     tr = document.createElement("tr");
     td = document.createElement("td");
     td.appendChild(document.createTextNode(workData01[i].用户名称));
@@ -127,7 +127,6 @@ function displayTable() {
     tr.appendChild(td);
     tbody.appendChild(tr);
   }
-  stage03();
 }
 
 //获取地理信息
@@ -335,17 +334,18 @@ function createCalMap() {
       y: '10%'
     },
     visualMap: {
-      min: 0,
-      max: 60,
+      /*min: 0,
+      max: 30,
       calculable: true,
       orient: 'vertical',
       top: 40,
-      right: 10
+      right: 10*/
+      show: false
     },
     calendar: {
       top: 40,
-      left: 60,
-      right: 80,
+      left: 40,
+      right: 40,
       bottom: 40,
       cellSize: ['auto', 13],
       range: ['2017-01-01', '2017-03-31'],
@@ -367,7 +367,7 @@ function createCalMap() {
       }
     },
     series: [{
-      name: 'Punch Card',
+      name: '异动数量',
       type: 'heatmap',
       coordinateSystem: "calendar",
       label: {
@@ -391,9 +391,6 @@ function createCalMap() {
   }
   var calendarMap = echarts.init(document.getElementById('calendarMap'));
   calendarMap.setOption(option);
-  calendarMap.on('click', function (params) {
-
-  });
   return calendarMap;
 }
 
@@ -428,6 +425,26 @@ function createGeoMap() {
         }
       },
       dimensions: ['经度', '纬度']
+    }, {
+      name: "异动",
+      type: 'effectScatter',
+      coordinateSystem: 'bmap',
+      symbol: "circle",
+      symbolSize: 20,
+      itemStyle: {
+        normal: {
+          color: "#1335ce"
+        }
+      },
+      symbolSize: function (val) {
+        return val[2] / 10;
+      },
+      showEffectOn: 'render',
+      rippleEffect: {
+        brushType: 'stroke'
+      },
+      hoverAnimation: true,
+      dimensions: ['经度', '纬度']
     }]
   }
   var mapChart = echarts.init(document.getElementById('mapContainer'));
@@ -454,9 +471,8 @@ function createLineMap(obj) {
       type: "time"
     },
     yAxis: {
-      splitLine: {
-        show: false
-      },
+      type: 'value',
+      min: 0
     },
     toolbox: {
       left: 'center',
@@ -472,12 +488,12 @@ function createLineMap(obj) {
       type: "slider",
       xAxisIndex: [0],
       start: 0,
-      end: 10,
+      end: 40,
       filterMode: 'filter'
     }, {
       type: "slider",
       yAxisIndex: [0],
-      start: 80,
+      start: 0,
       end: 100,
       filterMode: 'filter',
       right: 20
@@ -517,14 +533,6 @@ function createLineMap(obj) {
       name: 'A相',
       type: 'line',
       showSymbol: false,
-      markLine: {
-        silent: true,
-        data: [{
-          yAxis: 216
-        }, {
-          yAxis: 224
-        }]
-      }
     }, {
       name: 'B相',
       type: 'line',
