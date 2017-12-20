@@ -1,1 +1,5 @@
+#忽略的文件
 .DS_Store
+
+#忽略的文件夹
+Project_F/node_modules/
